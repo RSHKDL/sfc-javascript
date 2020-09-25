@@ -1,0 +1,5 @@
+### MySQL
+MYSQL_ROOT_PASSWORD=your_password
+
+### Phpmyadmin
+PMA_HOST=db
