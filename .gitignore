@@ -1,1 +1,6 @@
+### DOCKER
+docker-compose.yml
+docker-env
 
+### IDE PHPSTORM
+.idea/
