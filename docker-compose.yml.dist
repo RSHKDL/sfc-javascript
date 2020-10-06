@@ -1,6 +1,20 @@
 version: '3.8'
 services:
 
+	php:
+			build:
+				args:
+					user: <choose a username>
+					uid: <choose a user id, ideally same as your local uid (default 1000)>
+				context: ./docker/php
+				dockerfile: Dockerfile
+			container_name: <optionally, choose a name>
+			restart: on-failure
+			volumes:
+				- <symfony_directory>:/var/www/symfony:cached # https://docs.docker.com/docker-for-mac/osxfs-caching/
+			ports:
+				- '<choose_a_port>:9000'
+
 	db:
 		image: mysql:8.0
 		container_name: <optionally, choose a name>
@@ -38,21 +52,12 @@ services:
 		depends_on:
 			- php
 
-	php:
-		build: ./docker/php
-		container_name: <optionally, choose a name>
-		restart: on-failure
-		volumes:
-	  		- <symfony_directory>:/var/www/symfony:cached # https://docs.docker.com/docker-for-mac/osxfs-caching/
-		ports:
-			- '<choose_a_port>:9000'
-
 	node:
 		build: ./docker/node
 		container_name: <optionally, choose a name>
-		restart: on-failure
+		restart: unless-stopped
 		volumes:
-	  		- <symfony_directory>:/var/www/symfony:cached
+			- <symfony_directory>:/var/www/symfony:cached # https://docs.docker.com/docker-for-mac/osxfs-caching/
 		ports:
 			- '<choose_a_port>:8080'
 		depends_on:

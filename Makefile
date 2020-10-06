@@ -69,9 +69,13 @@ project-destroy:
 sh-web:
 	docker-compose exec -u 1000 nginx /bin/sh
 
-## Connect to the php container as uid 1000
+## Connect to the php container as default user
 sh-php:
-	docker-compose exec -u 1000 php /bin/sh
+	docker-compose exec php /bin/sh
+
+## Connect to the php container as root user
+sh-php-su:
+	docker-compose exec -u root php /bin/sh
 
 ## Connect to the node container as uid 1000
 sh-node:
