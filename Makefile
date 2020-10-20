@@ -55,7 +55,7 @@ project-stop:
 
 ## Stop the project and remove containers
 project-down:
-	docker-compose down
+	docker-compose down --remove-orphans
 
 ## Completely remove the project (containers, images, volumes)
 project-destroy:
@@ -63,7 +63,7 @@ project-destroy:
 
 ## -- SHELL ACCESS --
 
-.PHONY: sh-web sh-php sh-node
+.PHONY: sh-web sh-php sh-php-su sh-node
 
 ## Connect to the nginx container as uid 1000
 sh-web:

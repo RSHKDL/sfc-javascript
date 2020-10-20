@@ -13,6 +13,9 @@ TODO
 - MySQL 8
 - Symfony 4.4 LTS
 - Webpack encore
+- Elasticsearch 7.9.2
+- Logstash 7.9.2
+- Kibana 7.9.2
 
 The images are build upon [Alpine Linux](https://alpinelinux.org/). If you want to
 update the Dockerfiles, you may need to refer to the Alpine Linux documentation.
@@ -30,6 +33,16 @@ update the Dockerfiles, you may need to refer to the Alpine Linux documentation.
 3. Replace the `<variables>` with your own values.
 
 4. TODO
+
+## Setup Elastic stack
+
+1. Create your kibana.yml
+
+    `cp elastic-stack/kibana/kibana.yml.dist elastic-stack/kibana/kibana.yml`
+
+2. Replace the `<variables>` with your own values.
+
+3. Access Kibana at `localhost:<the-port-defined-in-docker-compose>`
 
 ## Tests
 

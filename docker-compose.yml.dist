@@ -46,6 +46,7 @@ services:
 		container_name: <optionally, choose a name>
 		restart: on-failure
 		volumes:
+			- <nginx_log_directory>:/var/log/nginx:cached
 			- <symfony_directory>:/var/www/symfony:cached # https://docs.docker.com/docker-for-mac/osxfs-caching/
 		ports:
 			- '<choose_a_port>:80'
@@ -62,3 +63,44 @@ services:
 			- '<choose_a_port>:8080'
 		depends_on:
 	  		- php
+
+	elasticsearch:
+		image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+		container_name: <optionally, choose a name>
+		environment:
+		discovery.type: 'single-node'
+		ports:
+			- '<choose_a_port>:9200'
+		networks:
+			elastic_stack:
+		aliases:
+			- 'elasticsearch' # allow kibana to find elasticsearch (not 100% sure)
+
+	logstash:
+	image: docker.elastic.co/logstash/logstash:7.9.2
+	container_name: <optionally, choose a name>
+	volumes:
+		- ./elastic-stack/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:cached
+		- ./elastic-stack/logstash/conf.d:/etc/logstash/conf.d:cached
+		- <nginx_log_directory>:/var/log/nginx:cached
+		- <symfony_log_directory>:/var/www/symfony/var/log:cached
+	depends_on:
+		- elasticsearch
+	networks:
+		- elastic_stack
+
+	kibana:
+		image: docker.elastic.co/kibana/kibana:7.9.2
+		container_name: r<optionally, choose a name>
+		volumes:
+		- ./elastic-stack/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:cached
+		ports:
+		- '<choose_a_port>:5601'
+		depends_on:
+			- elasticsearch
+			- logstash
+		networks:
+			- elastic_stack
+
+	networks:
+		elastic_stack:

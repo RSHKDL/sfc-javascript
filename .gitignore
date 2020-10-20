@@ -4,3 +4,9 @@ docker-env
 
 ### IDE PHPSTORM
 .idea/
+
+### LOGS
+docker/nginx/log
+
+### KIBANA
+elastic-stack/kibana/kibana.yml

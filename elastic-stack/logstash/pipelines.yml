@@ -1,0 +1,5 @@
+# Default pipeline
+- pipeline.id: application
+  path.config: "/etc/logstash/conf.d/application.conf"
+
+# You can add other pipelines here. See https://www.elastic.co/guide/en/logstash/7.9/multiple-pipelines.html
