@@ -91,7 +91,7 @@ services:
 
 	kibana:
 		image: docker.elastic.co/kibana/kibana:7.9.2
-		container_name: r<optionally, choose a name>
+		container_name: <optionally, choose a name>
 		volumes:
 		- ./elastic-stack/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:cached
 		ports:

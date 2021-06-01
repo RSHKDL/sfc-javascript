@@ -1,10 +1,12 @@
 # Symfony with Docker
 
-This is a complete stack for running a Symfony 4 LTS project with Docker.
+This is a complete stack for running a Symfony 4.4 LTS project with Docker.
+This project is created with a learning purpose in mind and is not suitable for production.
 
 ## Requirements
 
-TODO
+- [Docker](https://docs.docker.com/engine/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Stack
 
