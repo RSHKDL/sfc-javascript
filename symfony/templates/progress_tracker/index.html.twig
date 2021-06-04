@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Track your progress{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <h2>Track your progress</h2>
+        {% include('progress_tracker/_form.html.twig') %}
+        {% include('progress_tracker/_history.html.twig') %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $('.js-delete-game-played').on('click', function() {
+                console.log('todo delete!');
+            });
+        });
+    </script>
+{% endblock %}
