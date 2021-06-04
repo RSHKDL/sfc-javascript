@@ -1,5 +1,8 @@
 .DEFAULT_GOAL := help
 
+COMPOSE=docker-compose
+PROJECT_PATH=/var/www/symfony
+
 ## -- MAKEFILE INFO --
 
 ## This help message
@@ -67,15 +70,15 @@ project-destroy:
 
 ## Connect to the nginx container as uid 1000
 sh-web:
-	docker-compose exec -u 1000 nginx /bin/sh
+	$(COMPOSE) exec -u 1000 nginx /bin/sh
 
 ## Connect to the php container as default user
 sh-php:
-	docker-compose exec php /bin/sh
+	$(COMPOSE) exec php /bin/sh && "cd ${PROJECT_PATH}"
 
 ## Connect to the php container as root user
 sh-php-su:
-	docker-compose exec -u root php /bin/sh
+	$(COMPOSE) exec -u root php /bin/sh && "cd ${PROJECT_PATH}"
 
 ## Connect to the node container as uid 1000
 sh-node:
