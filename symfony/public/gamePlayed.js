@@ -1,8 +1,9 @@
-(function (window, $) {
+(function (window, $, Routing) {
     'use strict'
     window.GamePlayed = function ($wrapper) {
         this.$wrapper = $wrapper
         this.helper = new Helper(this.$wrapper)
+        this.loadGamesPlayed()
 
         this.$wrapper.on(
             'click',
@@ -26,6 +27,18 @@
     $.extend(GamePlayed.prototype, {
         _selectors: {
             newGamePlayedForm: '.js-new-game-played-form'
+        },
+
+        loadGamesPlayed: function () {
+            let self = this
+            $.ajax({
+                url: Routing.generate('api_game_played_list'),
+                success: function (data) {
+                    data.forEach((element) => {
+                        self._addRow(element)
+                    })
+                }
+            })
         },
 
         handleGamePlayedDelete: function (e) {
@@ -100,8 +113,8 @@
 
         _removeFormErrors: function () {
             let $form = this.$wrapper.find(this._selectors.newGamePlayedForm)
-            $form.find('.js-field-error').remove();
-            $form.find('.form-group').removeClass('has-error');
+            $form.find('.js-field-error').remove()
+            $form.find('.form-group').removeClass('has-error')
         },
 
         _clearForm: function () {
@@ -112,7 +125,7 @@
 
         _addRow: function (gamePlayed) {
             let templateText = $('#js-game-played-row-template').html()
-            let template = _.template(templateText); // _ underscore come from underscore.js
+            let template = _.template(templateText) // _ underscore come from underscore.js
             let html = template(gamePlayed)
             this.$wrapper.find('tbody').append($.parseHTML(html))
             this.updateTotalHoursPlayed()
@@ -133,6 +146,4 @@
             return totalHoursPlayed
         }
     })
-
-
-})(window, $) // self executing function
+})(window, $, Routing) // self executing function

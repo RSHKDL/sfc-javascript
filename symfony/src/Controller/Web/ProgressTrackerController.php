@@ -21,22 +21,14 @@ class ProgressTrackerController extends AbstractController
     /**
      * @Route("/progress-tracker", name="progress-tracker")
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
         $form = $this->createForm(NewGamePlayedType::class);
 
-        $gamesPlayed = $this->gamePlayedRepository->findBy(['player' => $this->getUser()]);
-        $totalHoursPlayed = 0;
-        foreach ($gamesPlayed as $gamePlayed) {
-            $totalHoursPlayed += $gamePlayed->getTimeSpent();
-        }
-
         return $this->render('progress_tracker/index.html.twig', [
-            'form' => $form->createView(),
-            'gamesPlayed' => $gamesPlayed,
-            'totalHoursPlayed' => $totalHoursPlayed
+            'form' => $form->createView()
         ]);
     }
 }

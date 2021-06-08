@@ -37,7 +37,10 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * @Route("/games", name="game_played_list", methods={"GET"})
+     * @Route("/games",
+     *     name="game_played_list",
+     *     methods={"GET"},
+     *     options={"expose"=true})
      */
     public function getGamesPlayed(): JsonResponse
     {
@@ -45,11 +48,7 @@ class ProgressTrackerApiController extends AbstractController
         $gamesPlayed = $this->gamePlayedRepository->findBy(['player' => $this->getUser()]);
         $items = [];
         foreach ($gamesPlayed as $gamePlayed) {
-            $items[] = new GamePlayedApiModel(
-                $gamePlayed->getGame()->getName(),
-                $gamePlayed->getPlayer()->getEmail(),
-                $gamePlayed->getTimeSpent()
-            );
+            $items[] = $this->createGamePlayedModelFromEntity($gamePlayed);
         }
 
         return $this->createApiResponse($items, ['game_played_list']);
@@ -61,12 +60,7 @@ class ProgressTrackerApiController extends AbstractController
     public function getGamePlayed(GamePlayed $gamePlayed): JsonResponse
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
-
-        $item = new GamePlayedApiModel(
-            $gamePlayed->getGame()->getName(),
-            $gamePlayed->getPlayer()->getEmail(),
-            $gamePlayed->getTimeSpent()
-        );
+        $item = $this->createGamePlayedModelFromEntity($gamePlayed);
 
         return $this->createApiResponse($item, ['game_played_show']);
     }
@@ -97,7 +91,7 @@ class ProgressTrackerApiController extends AbstractController
 
         $command = $form->getData();
         $gamePlayed = $this->newGamePlayedCommandHandler->handle($command);
-        $gamePlayedApiModel = $this->createGamePlayedApiModel($gamePlayed);
+        $gamePlayedApiModel = $this->createGamePlayedModelFromEntity($gamePlayed);
 
         return $this->createApiResponse(
             $gamePlayedApiModel,
@@ -166,7 +160,7 @@ class ProgressTrackerApiController extends AbstractController
      * This should be moved into a service if it needed to be
      * re-used elsewhere.
      */
-    protected function createGamePlayedApiModel(GamePlayed $gamePlayed): GamePlayedApiModel
+    protected function createGamePlayedModelFromEntity(GamePlayed $gamePlayed): GamePlayedApiModel
     {
         $model = new GamePlayedApiModel(
             $gamePlayed->getGame()->getName(),
