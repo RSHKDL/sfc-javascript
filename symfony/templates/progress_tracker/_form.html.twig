@@ -1,9 +1,15 @@
 <h3>Add a finished game!</h3>
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+{{ form_start(form, {
+    'attr': {
+        'novalidate': 'novalidate',
+        'class': 'js-new-game-played-form',
+        'data-url': path('api_game_played_create')
+    }
+}) }}
     {{ form_errors(form) }}
     {{ form_widget(form) }}
-<button type="submit" class="btn btn-primary">
-    <span class="fa fa-trophy" aria-hidden="true"></span>
-    &nbsp;I did it!
-</button>
+    <button type="submit" class="btn btn-primary">
+        <span class="fa fa-trophy" aria-hidden="true"></span>
+        &nbsp;I did it!
+    </button>
 {{ form_end(form) }}

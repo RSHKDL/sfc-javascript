@@ -3,7 +3,7 @@
 {% block title %}Track your progress{% endblock %}
 
 {% block body %}
-    <section class="container">
+    <section class="container js-game-played-wrapper">
         <h2>Track your progress</h2>
         {% include('progress_tracker/_form.html.twig') %}
         {% include('progress_tracker/_history.html.twig') %}
@@ -12,11 +12,28 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('gamePlayed.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('.js-delete-game-played').on('click', function() {
-                console.log('todo delete!');
-            });
-        });
+            let $wrapper = $('.js-game-played-wrapper')
+            new GamePlayed($wrapper)
+        })
+    </script>
+    <!-- underscore.js template -->
+    <script type="text/template" id="js-game-played-row-template">
+        <tr data-hours-played="<%= timeSpentToComplete %>">
+            <td><%= game %></td>
+            <td>to do</td>
+            <td><%= timeSpentToComplete %></td>
+            <td>
+                <a href="#"
+                   class="js-delete-game-played text-danger text-decoration-none"
+                   data-url="<%= links._self %>"
+                >
+                    <span class="fa fa-trash" aria-hidden="true"></span>
+                    &nbsp;Delete
+                </a>
+            </td>
+        </tr>
     </script>
 {% endblock %}

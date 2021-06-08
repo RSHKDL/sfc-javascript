@@ -1,0 +1,10 @@
+App\Api\Model\GamePlayedApiModel:
+  attributes:
+    game:
+      groups: ['game_played_list', 'game_played_show']
+    player:
+      groups: ['game_played_list', 'game_played_show']
+    timeSpentToComplete:
+      groups: ['game_played_list', 'game_played_show']
+    links:
+      groups: ['game_played_list', 'game_played_show']

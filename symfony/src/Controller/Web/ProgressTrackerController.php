@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Web;
 
-use App\Form\GamePlayedType;
+use App\GamePlayed\Form\NewGamePlayedType;
 use App\Repository\GamePlayedRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,25 +25,18 @@ class ProgressTrackerController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
-        $form = $this->createForm(GamePlayedType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $gamePlayed = $form->getData();
-            $gamePlayed->setPlayer($this->getUser());
-
-            $em->persist($gamePlayed);
-            $em->flush();
-
-            return $this->redirectToRoute('progress-tracker');
-        }
+        $form = $this->createForm(NewGamePlayedType::class);
 
         $gamesPlayed = $this->gamePlayedRepository->findBy(['player' => $this->getUser()]);
+        $totalHoursPlayed = 0;
+        foreach ($gamesPlayed as $gamePlayed) {
+            $totalHoursPlayed += $gamePlayed->getTimeSpent();
+        }
 
         return $this->render('progress_tracker/index.html.twig', [
             'form' => $form->createView(),
-            'gamesPlayed' => $gamesPlayed
+            'gamesPlayed' => $gamesPlayed,
+            'totalHoursPlayed' => $totalHoursPlayed
         ]);
     }
 }

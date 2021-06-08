@@ -10,13 +10,17 @@
     </thead>
     <tbody>
     {% for gamePlayed in gamesPlayed %}
-        <tr>
+        <tr data-hours-played="{{ gamePlayed.timeSpent }}">
             <td>{{ gamePlayed.game.name }}</td>
             <td>To do</td>
             <td>{{ gamePlayed.timeSpent }}</td>
             <td>
-                <a href="#" class="js-delete-game-played">
-                    <span class="fa fa-trash text-danger" aria-hidden="true"></span>
+                <a href="#"
+                   class="js-delete-game-played text-danger text-decoration-none"
+                   data-url="{{ path('api_game_played_delete', {id: gamePlayed.id}) }}"
+                >
+                    <span class="fa fa-trash" aria-hidden="true"></span>
+                    &nbsp;Delete
                 </a>
             </td>
         </tr>
@@ -30,7 +34,7 @@
         <tr>
             <td>&nbsp;</td>
             <th>Total time spent</th>
-            <th>To do</th>
+            <th class="js-total-hours-played">{{ totalHoursPlayed }}</th>
             <td>&nbsp;</td>
         </tr>
     </tfoot>
