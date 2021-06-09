@@ -66,9 +66,12 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * @Route("/games", name="game_played_create", methods={"POST"})
+     * @Route("/games",
+     *     name="game_played_create",
+     *     methods={"POST"},
+     *     options={"expose"=true})
      */
-    public function createGamePlayed(Request $request): JsonResponse
+    public function createGamePlayed(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $data = json_decode($request->getContent(), true);
@@ -93,11 +96,14 @@ class ProgressTrackerApiController extends AbstractController
         $gamePlayed = $this->newGamePlayedCommandHandler->handle($command);
         $gamePlayedApiModel = $this->createGamePlayedModelFromEntity($gamePlayed);
 
-        return $this->createApiResponse(
-            $gamePlayedApiModel,
-            ['game_played_show'],
-            Response::HTTP_CREATED
+        // Return an empty response and use Promises
+        $response = new Response(null, Response::HTTP_NO_CONTENT);
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('api_game_played_show', ['id' => $gamePlayed->getId()])
         );
+
+        return $response;
     }
 
     /**
