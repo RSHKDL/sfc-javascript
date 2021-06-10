@@ -1,179 +1,212 @@
 (function (window, $, Routing, swal) {
     'use strict'
-    window.GamePlayed = function ($wrapper) {
-        this.$wrapper = $wrapper
-        this.helper = new Helper(this.$wrapper)
-        this.loadGamesPlayed()
+    class GamePlayed {
+        constructor($wrapper) {
+            this.$wrapper = $wrapper
+            this.helper = new Helper(this.$wrapper)
+            this.loadGamesPlayed()
 
-        this.$wrapper.on(
-            'click',
-            '.js-delete-game-played',
-            this.handleGamePlayedDelete.bind(this)
-        )
+            this.$wrapper.on(
+                'click',
+                '.js-delete-game-played',
+                this.handleGamePlayedDelete.bind(this)
+            )
 
-        this.$wrapper.on(
-            'click',
-            'tbody tr',
-            this.handleRowClick.bind(this)
-        )
+            this.$wrapper.on(
+                'click',
+                'tbody tr',
+                this.handleRowClick.bind(this)
+            )
 
-        this.$wrapper.on(
-            'submit',
-            this._selectors.newGamePlayedForm,
-            this.handleNewFormSubmit.bind(this)
-        )
-    }
+            this.$wrapper.on(
+                'submit',
+                GamePlayed._selectors.newGamePlayedForm,
+                this.handleNewFormSubmit.bind(this)
+            )
+        }
 
-    $.extend(GamePlayed.prototype, {
-        _selectors: {
-            newGamePlayedForm: '.js-new-game-played-form'
-        },
+        /**
+         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get
+         * @returns {{newGamePlayedForm: string}}
+         * @private
+         */
+        static get _selectors() {
+            return {
+                newGamePlayedForm: '.js-new-game-played-form'
+            }
+        }
 
-        loadGamesPlayed: function () {
-            let self = this
+        loadGamesPlayed() {
             $.ajax({
                 url: Routing.generate('api_game_played_list'),
-            }).then(function (data) {
+            }).then((data) => {
                 data.forEach((element) => {
-                    self._addRow(element)
+                    this._addRow(element)
                 })
             })
-        },
+        }
 
-        handleGamePlayedDelete: function (e) {
+        handleGamePlayedDelete(e) {
             e.preventDefault()
-            let $link = $(e.currentTarget)
-            let self = this
+            const $link = $(e.currentTarget)
             swal({
                 title: 'Delete this game?',
                 text: 'What? Did you not actually finish this?',
                 showCancelButton: true,
                 showLoaderOnConfirm: true,
-                preConfirm: function() {
-                    // totally legal!
-                    return self._deleteGamePlayed($link)
-                }
-            }).catch(function (reason) {
-                    // nothing to do here, the catch could be removed
-                    console.log('cancelled!', reason)
+                preConfirm: () => this._deleteGamePlayed($link) // w/o curly braces this value will be returned!
+            }).catch((reason) => {
+                // nothing to do here, the catch could be removed
+                console.log('cancelled!', reason)
             })
-        },
+        }
 
-        handleRowClick: function () {
+        handleRowClick() {
             console.log('row clicked!');
-        },
+        }
 
-        updateTotalHoursPlayed: function () {
-            this.$wrapper.find('.js-total-hours-played').html(this.helper.calculateHoursPlayed())
-        },
+        updateTotalHoursPlayed() {
+            this.$wrapper.find('.js-total-hours-played').html(this.helper.getTotalHoursPlayedAsString())
+        }
 
-        handleNewFormSubmit: function(e) {
+        handleNewFormSubmit(e) {
             e.preventDefault();
-            let $form = $(e.currentTarget)
-            let formData = {}
-            $.each($form.serializeArray(), function(key, fieldData) {
+            const $form = $(e.currentTarget)
+            const formData = {}
+            $.each($form.serializeArray(), (key, fieldData) => {
                 formData[fieldData.name] = fieldData.value
             })
-            let self = this
-            this._saveGamePlayed(formData)
-            .then(function (data) {
-                self._clearForm()
-                self._addRow(data)
-            }).catch(function (errorData){
-                self._mapErrorsToForm(errorData.errors)
-            })
-        },
 
-        _saveGamePlayed: function (data) {
+            this._saveGamePlayed(formData)
+                .then((data) => {
+                    this._clearForm()
+                    this._addRow(data)
+                }).catch((errorData) => {
+                this._mapErrorsToForm(errorData.errors)
+            })
+        }
+
+        _saveGamePlayed(data) {
             return new Promise(function(resolve, reject) {
+                const url = Routing.generate('api_game_played_create')
                 $.ajax({
-                    url: Routing.generate('api_game_played_create'),
+                    url, // key and value are the same
                     method: 'POST',
                     data: JSON.stringify(data)
-                }).then(function (data, textStatus, jqXHR) {
+                }).then((data, textStatus, jqXHR) => {
                     $.ajax({
                         url: jqXHR.getResponseHeader('Location')
-                    }).then(function (data) {
+                    }).then((data) => {
                         console.log('now we are REALLY done')
                         resolve(data)
                     })
-                }).catch(function (jqXHR) {
+                }).catch((jqXHR) => {
                     let errorData = JSON.parse(jqXHR.responseText)
                     reject(errorData)
                 })
             })
-        },
+        }
 
-        _deleteGamePlayed: function ($link) {
+        _deleteGamePlayed($link) {
             $link.find('.fa')
                 .removeClass('fa-trash')
                 .addClass('fa-spinner')
                 .addClass('fa-spin')
-            let deleteUrl = $link.data('url')
-            let $row = $link.closest('tr')
-            let self = this
+            const deleteUrl = $link.data('url')
+            const $row = $link.closest('tr')
 
             return $.ajax({
                 url: deleteUrl,
                 method: 'DELETE'
-            }).then(function () {
-                $row.fadeOut('slow', function () {
+            }).then(() => {
+                $row.fadeOut('slow', () => {
                     $row.remove()
-                    self.updateTotalHoursPlayed()
+                    this.updateTotalHoursPlayed()
                 })
             })
-        },
+        }
 
-        _mapErrorsToForm: function(errorData) {
-            let $form = this.$wrapper.find(this._selectors.newGamePlayedForm)
+        _mapErrorsToForm(errorData) {
+            const $form = this.$wrapper.find(GamePlayed._selectors.newGamePlayedForm)
             this._removeFormErrors()
-            $form.find(':input').each(function() {
-                let fieldName = $(this).attr('name')
-                let $wrapper = $(this).closest('.form-group')
+            $form.find(':input').each((index, element) => {
+                const fieldName = $(element).attr('name')
+                const $wrapper = $(element).closest('.form-group')
                 if (!errorData[fieldName]) {
                     // no error!
                     return
                 }
-                let $error = $('<span class="js-field-error text-danger"></span>')
+                const $error = $('<span class="js-field-error text-danger"></span>')
                 $error.html(errorData[fieldName])
                 $wrapper.append($error)
                 $wrapper.addClass('has-error')
             })
-        },
+        }
 
-        _removeFormErrors: function () {
-            let $form = this.$wrapper.find(this._selectors.newGamePlayedForm)
+        _removeFormErrors() {
+            const $form = this.$wrapper.find(GamePlayed._selectors.newGamePlayedForm)
             $form.find('.js-field-error').remove()
             $form.find('.form-group').removeClass('has-error')
-        },
+        }
 
-        _clearForm: function () {
+        _clearForm() {
             this._removeFormErrors()
-            let $form = this.$wrapper.find(this._selectors.newGamePlayedForm)
+            const $form = this.$wrapper.find(GamePlayed._selectors.newGamePlayedForm)
             $form[0].reset()
-        },
+        }
 
-        _addRow: function (gamePlayed) {
-            let templateText = $('#js-game-played-row-template').html()
-            let template = _.template(templateText) // _ underscore come from underscore.js
-            let html = template(gamePlayed)
+        _addRow(gamePlayed) {
+            const html = rowTemplate(gamePlayed)
             this.$wrapper.find('tbody').append($.parseHTML(html))
             this.updateTotalHoursPlayed()
         }
-    })
-
-    let Helper = function ($wrapper) {
-        this.$wrapper = $wrapper
     }
 
-    $.extend(Helper.prototype, {
-        calculateHoursPlayed: function () {
-            let totalHoursPlayed = 0
-            this.$wrapper.find('tbody tr').each(function () {
-                totalHoursPlayed += $(this).data('hours-played')
+    class Helper {
+        constructor($wrapper) {
+            this.$wrapper = $wrapper
+        }
+
+        calculateHoursPlayed() {
+            return Helper._addHours(this.$wrapper.find('tbody tr'))
+        }
+
+        getTotalHoursPlayedAsString(maxHours = 9999) {
+            let total = this.calculateHoursPlayed()
+            if(total > maxHours) {
+                total = maxHours + '+ hrs'
+            }
+
+            return total
+        }
+
+        static _addHours($elements) {
+            let totalHours = 0
+            $elements.each((index, element) => {
+                totalHours += $(element).data('hours-played')
             })
 
-            return totalHoursPlayed
+            return totalHours
         }
-    })
+    }
+
+    const rowTemplate = (gamePlayed) => `
+    <tr data-hours-played="${gamePlayed.timeSpentToComplete}">
+            <td>${gamePlayed.game}</td>
+            <td>to do</td>
+            <td>${gamePlayed.timeSpentToComplete}</td>
+            <td>
+                <a href="#"
+                   class="js-delete-game-played text-danger text-decoration-none"
+                   data-url="${gamePlayed.links._self}"
+                >
+                    <span class="fa fa-trash" aria-hidden="true"></span>
+                    &nbsp;Delete
+                </a>
+            </td>
+        </tr>
+    `
+
+    // Export the class to the global scope!
+    window.GamePlayed = GamePlayed
 })(window, $, Routing, swal) // self executing function

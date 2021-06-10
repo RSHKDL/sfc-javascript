@@ -19,21 +19,4 @@
             new GamePlayed($wrapper)
         })
     </script>
-    <!-- underscore.js template -->
-    <script type="text/template" id="js-game-played-row-template">
-        <tr data-hours-played="<%= timeSpentToComplete %>">
-            <td><%= game %></td>
-            <td>to do</td>
-            <td><%= timeSpentToComplete %></td>
-            <td>
-                <a href="#"
-                   class="js-delete-game-played text-danger text-decoration-none"
-                   data-url="<%= links._self %>"
-                >
-                    <span class="fa fa-trash" aria-hidden="true"></span>
-                    &nbsp;Delete
-                </a>
-            </td>
-        </tr>
-    </script>
 {% endblock %}

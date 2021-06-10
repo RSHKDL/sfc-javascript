@@ -17,6 +17,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @DiscriminatorMap({"user" = "User", "player" = "Player"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ *
+ * Properties are protected because another class (Player) extends this one and the private scope
+ * caused the following error : "You cannot refresh a user from the EntityUserProvider that does not
+ * contain an identifier. The user object has to be serialized with its own identifier mapped by Doctrine."
  */
 class User implements UserInterface
 {
@@ -25,29 +29,29 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    protected ?int $id;
 
     /**
      * @ORM\Column(type="string", length=36, unique=true)
      * @see https://uuid.ramsey.dev/en/latest/
      */
-    private string $uuid;
+    protected string $uuid;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private ?string $email;
+    protected ?string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    protected array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password;
+    protected string $password;
 
     public function __construct()
     {
