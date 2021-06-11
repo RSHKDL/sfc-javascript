@@ -1,5 +1,11 @@
-(function (window, $, Routing, swal) {
-    'use strict'
+'use strict';
+
+import $ from "jquery";
+
+const Helper = require('./progress-tracker/progress-tracker-helper');
+const sweetalert2 = require('sweetalert2');
+
+(function (window, Routing) {
 
     let HelperInstances = new WeakMap()
 
@@ -53,15 +59,12 @@
         handleGamePlayedDelete(e) {
             e.preventDefault()
             const $link = $(e.currentTarget)
-            swal({
+            sweetalert2.fire({
                 title: 'Delete this game?',
                 text: 'What? Did you not actually finish this?',
                 showCancelButton: true,
                 showLoaderOnConfirm: true,
                 preConfirm: () => this._deleteGamePlayed($link) // w/o curly braces this value will be returned!
-            }).catch((reason) => {
-                // nothing to do here, the catch could be removed
-                console.log('cancelled!', reason)
             })
         }
 
@@ -168,41 +171,6 @@
         }
     }
 
-    class Helper {
-        constructor(gamesPlayed) {
-            this.gamesPlayed = gamesPlayed
-        }
-
-        calculateHoursPlayed() {
-            return Helper._addHours(this.gamesPlayed)
-        }
-
-        getTotalHoursPlayedAsString(maxHours = 9999) {
-            let total = this.calculateHoursPlayed()
-            if(total > maxHours) {
-                total = maxHours + '+ hrs'
-            }
-
-            return total + ' hrs'
-        }
-
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/is_not_iterable
-         * Also, we use gamePlayed[1] because [0] refers to Object.keys
-         * @param gamesPlayed
-         * @returns {number}
-         * @private
-         */
-        static _addHours(gamesPlayed) {
-            let totalHours = 0
-            for (let gamePlayed of Object.entries(gamesPlayed)) {
-                totalHours += gamePlayed[1].timeSpentToComplete
-            }
-
-            return totalHours
-        }
-    }
-
     const rowTemplate = (gamePlayed) => `
     <tr data-hours-played="${gamePlayed.timeSpentToComplete}">
             <td>${gamePlayed.game}</td>
@@ -222,4 +190,9 @@
 
     // Export the class to the global scope!
     window.GamePlayed = GamePlayed
-})(window, $, Routing, swal) // self executing function
+})(window, Routing) // self executing function
+
+$(document).ready(function() {
+    let $wrapper = $('.js-game-played-wrapper')
+    new GamePlayed($wrapper)
+})

@@ -12,11 +12,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('gamePlayed.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            let $wrapper = $('.js-game-played-wrapper')
-            new GamePlayed($wrapper)
-        })
-    </script>
+    {{ encore_entry_script_tags('progress-tracker') }}
 {% endblock %}
