@@ -1,5 +1,7 @@
 App\Api\Model\GamePlayedApiModel:
   attributes:
+    id:
+      groups: ['game_played_list', 'game_played_show']
     game:
       groups: ['game_played_list', 'game_played_show']
     player:

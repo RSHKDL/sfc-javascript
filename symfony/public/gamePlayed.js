@@ -1,9 +1,13 @@
 (function (window, $, Routing, swal) {
     'use strict'
+
+    let HelperInstances = new WeakMap()
+
     class GamePlayed {
         constructor($wrapper) {
+            this.gamesPlayed = {}
             this.$wrapper = $wrapper
-            this.helper = new Helper(this.$wrapper)
+            HelperInstances.set(this, new Helper(this.gamesPlayed))
             this.loadGamesPlayed()
 
             this.$wrapper.on(
@@ -40,9 +44,9 @@
             $.ajax({
                 url: Routing.generate('api_game_played_list'),
             }).then((data) => {
-                data.forEach((element) => {
-                    this._addRow(element)
-                })
+                for (let gamePlayed of data) {
+                    this._addRow(gamePlayed)
+                }
             })
         }
 
@@ -66,16 +70,16 @@
         }
 
         updateTotalHoursPlayed() {
-            this.$wrapper.find('.js-total-hours-played').html(this.helper.getTotalHoursPlayedAsString())
+            this.$wrapper.find('.js-total-hours-played').html(HelperInstances.get(this).getTotalHoursPlayedAsString())
         }
 
         handleNewFormSubmit(e) {
             e.preventDefault();
             const $form = $(e.currentTarget)
             const formData = {}
-            $.each($form.serializeArray(), (key, fieldData) => {
+            for (let fieldData of $form.serializeArray()) {
                 formData[fieldData.name] = fieldData.value
-            })
+            }
 
             this._saveGamePlayed(formData)
                 .then((data) => {
@@ -97,7 +101,6 @@
                     $.ajax({
                         url: jqXHR.getResponseHeader('Location')
                     }).then((data) => {
-                        console.log('now we are REALLY done')
                         resolve(data)
                     })
                 }).catch((jqXHR) => {
@@ -112,15 +115,17 @@
                 .removeClass('fa-trash')
                 .addClass('fa-spinner')
                 .addClass('fa-spin')
-            const deleteUrl = $link.data('url')
+            const id = $link.data('id')
+            const url = Routing.generate('api_game_played_delete', {id: id})
             const $row = $link.closest('tr')
 
             return $.ajax({
-                url: deleteUrl,
+                url,
                 method: 'DELETE'
             }).then(() => {
                 $row.fadeOut('slow', () => {
                     $row.remove()
+                    delete this.gamesPlayed[id]
                     this.updateTotalHoursPlayed()
                 })
             })
@@ -129,18 +134,18 @@
         _mapErrorsToForm(errorData) {
             const $form = this.$wrapper.find(GamePlayed._selectors.newGamePlayedForm)
             this._removeFormErrors()
-            $form.find(':input').each((index, element) => {
+            for (let element of $form.find(':input')) {
                 const fieldName = $(element).attr('name')
                 const $wrapper = $(element).closest('.form-group')
                 if (!errorData[fieldName]) {
                     // no error!
-                    return
+                    continue
                 }
                 const $error = $('<span class="js-field-error text-danger"></span>')
                 $error.html(errorData[fieldName])
                 $wrapper.append($error)
                 $wrapper.addClass('has-error')
-            })
+            }
         }
 
         _removeFormErrors() {
@@ -156,6 +161,7 @@
         }
 
         _addRow(gamePlayed) {
+            this.gamesPlayed[gamePlayed.id] = gamePlayed
             const html = rowTemplate(gamePlayed)
             this.$wrapper.find('tbody').append($.parseHTML(html))
             this.updateTotalHoursPlayed()
@@ -163,12 +169,12 @@
     }
 
     class Helper {
-        constructor($wrapper) {
-            this.$wrapper = $wrapper
+        constructor(gamesPlayed) {
+            this.gamesPlayed = gamesPlayed
         }
 
         calculateHoursPlayed() {
-            return Helper._addHours(this.$wrapper.find('tbody tr'))
+            return Helper._addHours(this.gamesPlayed)
         }
 
         getTotalHoursPlayedAsString(maxHours = 9999) {
@@ -177,14 +183,21 @@
                 total = maxHours + '+ hrs'
             }
 
-            return total
+            return total + ' hrs'
         }
 
-        static _addHours($elements) {
+        /**
+         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/is_not_iterable
+         * Also, we use gamePlayed[1] because [0] refers to Object.keys
+         * @param gamesPlayed
+         * @returns {number}
+         * @private
+         */
+        static _addHours(gamesPlayed) {
             let totalHours = 0
-            $elements.each((index, element) => {
-                totalHours += $(element).data('hours-played')
-            })
+            for (let gamePlayed of Object.entries(gamesPlayed)) {
+                totalHours += gamePlayed[1].timeSpentToComplete
+            }
 
             return totalHours
         }
@@ -198,7 +211,7 @@
             <td>
                 <a href="#"
                    class="js-delete-game-played text-danger text-decoration-none"
-                   data-url="${gamePlayed.links._self}"
+                   data-id="${gamePlayed.id}"
                 >
                     <span class="fa fa-trash" aria-hidden="true"></span>
                     &nbsp;Delete

@@ -107,7 +107,10 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * @Route("/games/{id}", name="game_played_delete", methods={"DELETE"})
+     * @Route("/games/{id}",
+     *     name="game_played_delete",
+     *     methods={"DELETE"},
+     *     options={"expose"=true})
      */
     public function deleteGamePlayed(GamePlayed $gamePlayed): Response
     {
@@ -169,6 +172,7 @@ class ProgressTrackerApiController extends AbstractController
     protected function createGamePlayedModelFromEntity(GamePlayed $gamePlayed): GamePlayedApiModel
     {
         $model = new GamePlayedApiModel(
+            $gamePlayed->getId(),
             $gamePlayed->getGame()->getName(),
             $gamePlayed->getPlayer()->getUsername(),
             $gamePlayed->getTimeSpent()
