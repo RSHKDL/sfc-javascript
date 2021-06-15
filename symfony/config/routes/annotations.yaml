@@ -1,6 +1,7 @@
 controllers_web:
     resource: ../../src/Controller/Web
     type: annotation
+    name_prefix: 'app_'
 
 controllers_api:
     resource: ../../src/Controller/Api

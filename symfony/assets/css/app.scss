@@ -1,5 +1,8 @@
-@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+// https://stackoverflow.com/questions/51571170/how-to-add-fontawesome-5-to-symfony-4-using-webpack-encore
+@import "./helper/variables";
 
 body {
-    background-color: #f5f5f5;
+    background-color: $discreetWhite;
 }

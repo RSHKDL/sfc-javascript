@@ -1,14 +1,16 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}List of games{% endblock %}
 
-{% block body %}
-    <h2>List of games</h2>
-    <ul>
-        {% for game in games %}
-            <li>{{ game.name }}</li>
-        {% else %}
-            <li>No games.</li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+{% block page_content %}
+    <section>
+        <h2>List of games</h2>
+        <ul>
+            {% for game in games %}
+                <li>{{ game.name }}</li>
+            {% else %}
+                <li>No games.</li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock page_content %}

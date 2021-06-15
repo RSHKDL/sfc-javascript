@@ -19,7 +19,7 @@ class ProgressTrackerController extends AbstractController
     }
 
     /**
-     * @Route("/progress-tracker", name="progress-tracker")
+     * @Route("/progress-tracker", name="progress_tracker")
      */
     public function index(): Response
     {
