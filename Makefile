@@ -86,7 +86,7 @@ sh-node:
 
 ## -- YARN --
 
-.PHONY: assets-compile assets-compile-watch
+.PHONY: assets-compile assets-watch assets-dump-routes
 
 ## Compile assets once
 assets-compile:
@@ -95,3 +95,7 @@ assets-compile:
 ## Recompile assets automatically when file change
 assets-watch:
 	docker-compose exec -u 1000 node yarn encore dev --watch
+
+## Dump routes for FOSJsRoutingBundle
+assets-dump-routes:
+	$(COMPOSE) exec php bin/console fos:js-routing:dump --format=json --target=assets/json/fos_js_routes.json

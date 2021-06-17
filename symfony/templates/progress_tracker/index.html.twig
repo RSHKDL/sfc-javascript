@@ -3,7 +3,7 @@
 {% block title %}Track your progress{% endblock %}
 
 {% block body %}
-    <section class="container js-game-played-wrapper">
+    <section class="container js-game-played-wrapper" data-games-played="{{ gamesPlayedJson|e('html_attr') }}">
         <h2>Track your progress</h2>
         {% include('progress_tracker/_form.html.twig') %}
         {% include('progress_tracker/_history.html.twig') %}

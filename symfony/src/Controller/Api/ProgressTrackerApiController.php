@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Model\GamePlayedApiModel;
+use App\Api\Model\GamePlayedModel;
 use App\Entity\GamePlayed;
 use App\GamePlayed\Form\NewGamePlayedType;
 use App\GamePlayed\NewGamePlayedCommandHandler;
@@ -94,7 +94,6 @@ class ProgressTrackerApiController extends AbstractController
 
         $command = $form->getData();
         $gamePlayed = $this->newGamePlayedCommandHandler->handle($command);
-        $gamePlayedApiModel = $this->createGamePlayedModelFromEntity($gamePlayed);
 
         // Return an empty response and use Promises
         $response = new Response(null, Response::HTTP_NO_CONTENT);
@@ -164,14 +163,14 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * Turns a GamePlayed into a GamePlayedApiModel for the API.
+     * Turns a GamePlayed into a GamePlayedModel for the API.
      *
      * This should be moved into a service if it needed to be
      * re-used elsewhere.
      */
-    protected function createGamePlayedModelFromEntity(GamePlayed $gamePlayed): GamePlayedApiModel
+    protected function createGamePlayedModelFromEntity(GamePlayed $gamePlayed): GamePlayedModel
     {
-        $model = new GamePlayedApiModel(
+        $model = new GamePlayedModel(
             $gamePlayed->getId(),
             $gamePlayed->getGame()->getName(),
             $gamePlayed->getPlayer()->getUsername(),

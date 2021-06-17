@@ -2,7 +2,9 @@
 
 namespace App\Api\Model;
 
-class GamePlayedApiModel
+use App\Entity\GamePlayed;
+
+final class GamePlayedModel
 {
     private int $id;
     private string $game;
@@ -47,5 +49,15 @@ class GamePlayedApiModel
     public function getLinks(): array
     {
         return $this->links;
+    }
+
+    public static function createFromEntity(GamePlayed $gamePlayed): self
+    {
+        return new self(
+            $gamePlayed->getId(),
+            $gamePlayed->getGame()->getName(),
+            $gamePlayed->getPlayer()->getUsername(),
+            $gamePlayed->getTimeSpent()
+        );
     }
 }

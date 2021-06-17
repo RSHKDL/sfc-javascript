@@ -1,4 +1,4 @@
-App\Api\Model\GamePlayedApiModel:
+App\Api\Model\GamePlayedModel:
   attributes:
     id:
       groups: ['game_played_list', 'game_played_show']

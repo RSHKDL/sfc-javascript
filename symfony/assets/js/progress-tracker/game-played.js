@@ -3,15 +3,19 @@
 import $ from "jquery"
 import Helper from "../progress-tracker/game-played-helper"
 import sweetalert2 from "sweetalert2"
+import Routing from "../components/Routing"
 
 let HelperInstances = new WeakMap()
 
 class GamePlayed {
-    constructor($wrapper) {
+    constructor($wrapper, initialGamesPlayed) {
         this.gamesPlayed = {}
         this.$wrapper = $wrapper
         HelperInstances.set(this, new Helper(this.gamesPlayed))
-        this.loadGamesPlayed()
+
+        for (let gamePlayed of initialGamesPlayed) {
+            this._addRow(gamePlayed)
+        }
 
         this.$wrapper.on(
             'click',
@@ -41,16 +45,6 @@ class GamePlayed {
         return {
             newGamePlayedForm: '.js-new-game-played-form'
         }
-    }
-
-    loadGamesPlayed() {
-        $.ajax({
-            url: Routing.generate('api_game_played_list'),
-        }).then((data) => {
-            for (let gamePlayed of data) {
-                this._addRow(gamePlayed)
-            }
-        })
     }
 
     handleGamePlayedDelete(e) {
