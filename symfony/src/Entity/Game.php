@@ -25,13 +25,25 @@ class Game
     private string $name;
 
     /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private string $slug;
+
+    /**
+     * @ORM\Column(type="integer", unique=true)
+     */
+    private string $rawgId;
+
+    /**
      * @ORM\OneToMany(targetEntity=GamePlayed::class, mappedBy="game")
      */
     private Collection $playedBy;
 
-    public function __construct(string $name)
+    public function __construct(string $name, string $slug, int $rawgId)
     {
         $this->name = $name;
+        $this->slug = $slug;
+        $this->rawgId = $rawgId;
         $this->playedBy = new ArrayCollection();
     }
 
@@ -48,6 +60,16 @@ class Game
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function getRawgId(): ?int
+    {
+        return $this->rawgId;
     }
 
     /**

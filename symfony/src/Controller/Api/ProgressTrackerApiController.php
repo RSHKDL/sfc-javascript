@@ -37,7 +37,7 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * @Route("/games",
+     * @Route("/track-progress",
      *     name="game_played_list",
      *     methods={"GET"},
      *     options={"expose"=true})
@@ -55,7 +55,7 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * @Route("/games/{id}", name="game_played_show", methods={"GET"})
+     * @Route("/track-progress/{id}", name="game_played_show", methods={"GET"})
      */
     public function getGamePlayed(GamePlayed $gamePlayed): JsonResponse
     {
@@ -66,7 +66,7 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * @Route("/games",
+     * @Route("/track-progress",
      *     name="game_played_create",
      *     methods={"POST"},
      *     options={"expose"=true})
@@ -106,7 +106,7 @@ class ProgressTrackerApiController extends AbstractController
     }
 
     /**
-     * @Route("/games/{id}",
+     * @Route("/track-progress/{id}",
      *     name="game_played_delete",
      *     methods={"DELETE"},
      *     options={"expose"=true})

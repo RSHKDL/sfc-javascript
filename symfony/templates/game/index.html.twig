@@ -3,7 +3,9 @@
 {% block title %}List of games{% endblock %}
 
 {% block page_content %}
-    <section>
+    <section class="js-games-wrapper">
+        {% include('game/_form.html.twig') %}
+        <div class="js-found-games"></div>
         <h2>List of games</h2>
         <ul>
             {% for game in games %}
@@ -14,3 +16,8 @@
         </ul>
     </section>
 {% endblock page_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('games') }}
+{% endblock %}

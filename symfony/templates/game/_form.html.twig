@@ -1,0 +1,24 @@
+<h3>Find a game</h3>
+{{ form_start(form, {
+    'attr': {
+        'novalidate': 'novalidate',
+        'class': 'js-find-game-form row row-cols-lg-auto g-3 align-items-center',
+        'data-url': path('api_game_find')
+    }
+}) }}
+    <div class="col-12">
+        {{ form_widget(form.game, {
+            'attr': {
+                'placeholder': 'Type a game name...',
+                'aria-label': 'Game name'
+            }
+        }) }}
+        {{ form_errors(form.game) }}
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+            <span class="fa fa-glasses" aria-hidden="true"></span>
+            &nbsp;Find!
+        </button>
+    </div>
+{{ form_end(form) }}
