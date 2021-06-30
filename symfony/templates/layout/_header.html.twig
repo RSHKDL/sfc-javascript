@@ -1,3 +1,11 @@
+{% macro navlink(name, route_name, icon) %}
+    {% set isActive = app.request.attributes.get('_route') is same as(route_name) %}
+    <a class="nav-link{% if isActive %} active{% endif %}" href="{{ path(route_name) }}" {% if isActive %}aria-current="page"{% endif %}>
+        {% if icon %}<span class="{{ icon }}" aria-hidden="true"></span>{% endif %}
+        &nbsp;{{ name }}
+    </a>
+{% endmacro %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ path('app_homepage') }}">CMSB</a>
@@ -6,29 +14,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_homepage') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_games') }}">
-                        <span class="fab fa-steam" aria-hidden="true"></span>
-                        &nbsp;Games
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_progress_tracker') }}">Progress tracker</a>
-                </li>
+                <li class="nav-item">{{ _self.navlink('Home', 'app_homepage', 'fas fa-home') }}</li>
+                <li class="nav-item">{{ _self.navlink('Games', 'app_games', 'fab fa-steam') }}</li>
+                <li class="nav-item">{{ _self.navlink('Progress tracker', 'app_progress_tracker', 'fas fa-clipboard-list') }}</li>
             </ul>
             <ul class="navbar-nav d-flex">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">logout</a>
-                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">{{ _self.navlink('Logout', 'app_logout', 'fas fa-sign-out-alt')  }}</li>
+                {% else %}
+                    <li class="nav-item">{{ _self.navlink('Sign In', 'app_login', 'fas fa-sign-in-alt') }}</li>
+                {% endif %}
             </ul>
         </div>
     </div>
