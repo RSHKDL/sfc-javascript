@@ -3,7 +3,11 @@
 {% block title %}Track your progress{% endblock %}
 
 {% block page_content %}
-    <section class="container js-game-played-wrapper" data-games-played="{{ gamesPlayedJson|e('html_attr') }}">
+    <section>
+        <div id="progress-tracker-app"></div>
+    </section>
+    <hr/>
+    <section class="js-game-played-wrapper" data-games-played="{{ gamesPlayedJson|e('html_attr') }}">
         <h2>Track your progress</h2>
         {% include('progress_tracker/_form.html.twig') %}
         {% include('progress_tracker/_history.html.twig') %}
@@ -13,4 +17,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('progress-tracker') }}
+    {{ encore_entry_script_tags('progress_tracker') }}
 {% endblock %}

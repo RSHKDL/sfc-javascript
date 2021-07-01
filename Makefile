@@ -99,3 +99,11 @@ assets-watch:
 ## Dump routes for FOSJsRoutingBundle
 assets-dump-routes:
 	$(COMPOSE) exec php bin/console fos:js-routing:dump --format=json --target=assets/json/fos_js_routes.json
+
+## -- TOOLS --
+
+.PHONY: eslint
+
+## Lint javascript files
+eslint:
+	-$(COMPOSE) exec node /bin/sh -c "node_modules/.bin/eslint assets"

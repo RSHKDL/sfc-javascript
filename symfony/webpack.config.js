@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('progress-tracker', './assets/js/progress-tracker.js')
+    .addEntry('progress_tracker', './assets/js/progress_tracker.js')
     .addEntry('games', './assets/js/games.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -59,6 +60,9 @@ Encore
 
     // https://symfony.com/doc/current/frontend/encore/postcss.html
     .enablePostCssLoader()
+
+    // enable JSX support
+    .enableReactPreset()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
