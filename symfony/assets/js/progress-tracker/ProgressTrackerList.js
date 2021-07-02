@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 
 export default function ProgressTrackerList(props) {
     const { highlightedRowId, onRowClick } = props
@@ -25,4 +26,9 @@ export default function ProgressTrackerList(props) {
         ))}
         </tbody>
     )
+}
+
+ProgressTrackerList.propTypes = {
+    highlightedRowId: PropTypes.any,
+    onRowClick: PropTypes.func.isRequired
 }

@@ -1,5 +1,6 @@
 import React from "react"
-import ProgressTrackerList from "./ProgressTrackerList";
+import ProgressTrackerList from "./ProgressTrackerList"
+import PropTypes from "prop-types"
 
 export default function ProgressTracker(props) {
     const { highlightedRowId, onRowClick } = props
@@ -59,4 +60,9 @@ export default function ProgressTracker(props) {
             </table>
         </section>
     )
+}
+
+ProgressTracker.propTypes = {
+    highlightedRowId: PropTypes.any,
+    onRowClick: PropTypes.func.isRequired
 }
