@@ -60,6 +60,6 @@ services:
 		volumes:
 			- <symfony_directory>:/var/www/symfony:cached # https://docs.docker.com/docker-for-mac/osxfs-caching/
 		ports:
-			- '<choose_a_port>:8080'
+			- '<choose_a_port>:3000' # 8080 may be a good choice as it is the default webpack dev-server port
 		depends_on:
 	  		- php

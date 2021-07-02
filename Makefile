@@ -86,7 +86,7 @@ sh-node:
 
 ## -- YARN --
 
-.PHONY: assets-compile assets-watch assets-dump-routes
+.PHONY: assets-compile assets-watch assets-server assets-dump-routes
 
 ## Compile assets once
 assets-compile:
@@ -94,7 +94,11 @@ assets-compile:
 
 ## Recompile assets automatically when file change
 assets-watch:
-	docker-compose exec -u 1000 node yarn encore dev --watch
+	-$(COMPOSE) exec -u 1000 node yarn encore dev --watch
+
+## Recompile assets automatically with the webpack dev-server (not working atm)
+assets-server:
+	-$(COMPOSE)  exec -u 1000 node yarn encore dev-server --host 0.0.0.0 --disable-host-check
 
 ## Dump routes for FOSJsRoutingBundle
 assets-dump-routes:

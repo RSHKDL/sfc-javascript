@@ -11,5 +11,7 @@ RUN apk add --update \
 
 WORKDIR /var/www/symfony
 
+EXPOSE 3000
+
 # A container needs a foreground process to stay alive
 CMD ["tail", "-f", "/dev/null"]

@@ -3,9 +3,8 @@
 {% block title %}Track your progress{% endblock %}
 
 {% block page_content %}
-    <section>
-        <div id="progress-tracker-app"></div>
-    </section>
+    <div id="progress-tracker-app"></div>
+
     <hr/>
     <section class="js-game-played-wrapper" data-games-played="{{ gamesPlayedJson|e('html_attr') }}">
         <h2>Track your progress</h2>
