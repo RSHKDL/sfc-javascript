@@ -6,15 +6,13 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import '../css/app.scss';
+import '../css/app.scss'
 
-import $ from 'jquery';
+import $ from 'jquery'
 import 'bootstrap'
 // uncomment if you have legacy code that needs global variables
 // global.$ = $;
 
 // https://babeljs.io/docs/en/babel-polyfill
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js :)');
+import "core-js/stable"
+import "regenerator-runtime/runtime"

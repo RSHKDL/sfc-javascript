@@ -6,7 +6,12 @@ export default class ProgressTrackerApp extends Component {
         super(props)
 
         this.state = {
-            highlightedRowId: null
+            highlightedRowId: null,
+            gamesPlayed: [
+                {id: 1, game: 'Conan', achievements: [36, 100], hoursPlayed: 100},
+                {id: 2, game: 'Darkest Dungeon', achievements: [45, 45], hoursPlayed: 99},
+                {id: 3, game: 'Battlefield 6', achievements: [12, 51], hoursPlayed: 280}
+            ]
         }
 
         //@see: https://symfonycasts.com/screencast/reactjs/callback-props
@@ -17,12 +22,16 @@ export default class ProgressTrackerApp extends Component {
         this.setState({highlightedRowId: gamePlayedId})
     }
 
-    render() {
-        const { highlightedRowId } = this.state
+    handleGamePlayedSubmit(game, time, achievements) {
+        console.log('todo - handle this data: ', game, time, achievements)
+    }
 
+    render() {
         return <ProgressTracker
-            highlightedRowId={highlightedRowId}
+            {...this.props}
+            {...this.state}
             onRowClick={this.handleRowClick}
+            onGamePlayedSubmit={this.handleGamePlayedSubmit}
         />
     }
 }

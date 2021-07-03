@@ -1,14 +1,23 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-export default function ProgressTrackerList(props) {
-    const { highlightedRowId, onRowClick } = props
+function displayAchievements([current, max]) {
+    const percentage = (current / max) * 100
+    const background = percentage === 100 ? 'bg-success' : 'bg-secondary'
 
-    const gamesPlayed = [
-        {id: 1, game: 'Conan', achievements: 36, hoursPlayed: 100},
-        {id: 2, game: 'Darkest Dungeon', achievements: 45, hoursPlayed: 99},
-        {id: 3, game: 'Battlefield', achievements: 12, hoursPlayed: 280}
-    ]
+    return (
+        <span
+            className={'badge ' + background}
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title={ current + ' on ' + max }>
+            { percentage.toFixed() }%
+        </span>
+    )
+}
+
+export default function ProgressTrackerList(props) {
+    const { highlightedRowId, onRowClick, gamesPlayed } = props
 
     return(
         <tbody>
@@ -19,7 +28,7 @@ export default function ProgressTrackerList(props) {
                 onClick={() => onRowClick(gamePlayed.id)}
             >
                 <td>{ gamePlayed.game }</td>
-                <td>{ gamePlayed.achievements }</td>
+                <td>{ displayAchievements(gamePlayed.achievements) }</td>
                 <td>{ gamePlayed.hoursPlayed }</td>
                 <td>todo ...</td>
             </tr>
@@ -30,5 +39,6 @@ export default function ProgressTrackerList(props) {
 
 ProgressTrackerList.propTypes = {
     highlightedRowId: PropTypes.any,
-    onRowClick: PropTypes.func.isRequired
+    gamesPlayed: PropTypes.array.isRequired,
+    onRowClick: PropTypes.func.isRequired,
 }
