@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 
 function displayAchievements([current, max]) {
+
     const percentage = (current / max) * 100
     const background = percentage === 100 ? 'bg-success' : 'bg-secondary'
 
@@ -17,6 +18,7 @@ function displayAchievements([current, max]) {
 }
 
 export default function ProgressTrackerList(props) {
+
     const { highlightedRowId, onRowClick, gamesPlayed } = props
 
     return(
@@ -29,7 +31,7 @@ export default function ProgressTrackerList(props) {
             >
                 <td>{ gamePlayed.game }</td>
                 <td>{ displayAchievements(gamePlayed.achievements) }</td>
-                <td>{ gamePlayed.hoursPlayed }</td>
+                <td>{ gamePlayed.completionTime }</td>
                 <td>todo ...</td>
             </tr>
         ))}

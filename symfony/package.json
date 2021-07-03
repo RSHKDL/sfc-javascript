@@ -19,6 +19,7 @@
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^8.0.0",
         "sweetalert2": "^11.0.16",
+        "uuid": "^8.3.2",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
