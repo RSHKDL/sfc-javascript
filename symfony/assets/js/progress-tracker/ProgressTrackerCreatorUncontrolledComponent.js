@@ -167,6 +167,6 @@ export default class ProgressTrackerCreator extends Component {
     }
 }
 
-ProgressTrackerCreator.propTypes = {
+ProgressTrackerCreatorUncontrolledComponent.propTypes = {
     onAddGamePlayed: PropTypes.func.isRequired
 }

@@ -1,6 +1,6 @@
 import React from "react"
 import ProgressTrackerList from "./ProgressTrackerList"
-import ProgressTrackerCreator from "./ProgressTrackerCreator"
+import ProgressTrackerCreator from "./ProgressTrackerCreatorControlledComponent"
 import PropTypes from "prop-types"
 
 export default function ProgressTracker(props) {
