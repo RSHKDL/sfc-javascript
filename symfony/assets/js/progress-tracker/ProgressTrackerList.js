@@ -19,20 +19,37 @@ function displayAchievements([current, max]) {
 
 export default function ProgressTrackerList(props) {
 
-    const { highlightedRowId, onRowClick, gamesPlayed } = props
+    const { gamesPlayed, onDeleteGamePlayed } = props
+
+    const handleDeleteClick = (event, gamePlayedId) => {
+        event.preventDefault()
+        onDeleteGamePlayed(gamePlayedId)
+    }
 
     return(
         <tbody>
         {gamesPlayed.map((gamePlayed) => (
-            <tr
-                key={gamePlayed.id}
-                className={highlightedRowId === gamePlayed.id ? 'bg-primary text-white' : ''}
-                onClick={() => onRowClick(gamePlayed.id)}
-            >
+            <tr key={gamePlayed.id}>
                 <td>{ gamePlayed.game }</td>
                 <td>{ displayAchievements(gamePlayed.achievements) }</td>
                 <td>{ gamePlayed.completionTime }</td>
-                <td>todo ...</td>
+                <td>
+                    <div className={"d-flex justify-content-evenly"}>
+                        <a href="" className={"btn btn-secondary btn-sm"} aria-label={"Complete"}>
+                            <span className="fas fa-clipboard-check" aria-hidden="true"></span>
+                        </a>
+                        <a href="" className={"btn btn-secondary btn-sm"} aria-label={"Edit"}>
+                            <span className="fas fa-stopwatch" aria-hidden="true"></span>
+                        </a>
+                        <a
+                            href=""
+                            onClick={(event) => handleDeleteClick(event, gamePlayed.id)}
+                            className={"btn btn-danger btn-sm"} aria-label={"Delete"}
+                        >
+                            <span className="fas fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </td>
             </tr>
         ))}
         </tbody>
@@ -40,7 +57,6 @@ export default function ProgressTrackerList(props) {
 }
 
 ProgressTrackerList.propTypes = {
-    highlightedRowId: PropTypes.any,
     gamesPlayed: PropTypes.array.isRequired,
-    onRowClick: PropTypes.func.isRequired,
+    onDeleteGamePlayed: PropTypes.func.isRequired
 }

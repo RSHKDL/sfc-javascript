@@ -5,7 +5,6 @@
 {% block page_content %}
     <div id="progress-tracker-app"></div>
 
-    <hr/>
     <section class="js-game-played-wrapper" data-games-played="{{ gamesPlayedJson|e('html_attr') }}">
         <h2>Track your progress</h2>
         {% include('progress_tracker/_form.html.twig') %}

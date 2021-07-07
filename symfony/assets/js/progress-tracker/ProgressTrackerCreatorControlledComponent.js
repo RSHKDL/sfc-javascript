@@ -7,8 +7,8 @@ export default class ProgressTrackerCreator extends Component {
 
         this.state = {
             gameSelectId: '',
-            completionTimeValue: 0,
-            achievementsValue: 0,
+            completionTimeValue: '',
+            achievementsValue: '',
             gameSelectState: null,
             completionTimeInputState: null,
             achievementsInputState: null,
@@ -64,10 +64,10 @@ export default class ProgressTrackerCreator extends Component {
             })
         }
 
-        if (completionTimeValue <= 0) {
+        if (completionTimeValue < 0) {
             hasError = true
             this.setState({
-                completionTimeInputFeedback: 'Please enter a value greater than 0',
+                completionTimeInputFeedback: 'Completion time must be positive',
                 completionTimeInputState: 'invalid'
             })
         } else {
@@ -77,10 +77,10 @@ export default class ProgressTrackerCreator extends Component {
             })
         }
 
-        if (!achievementsValue || achievementsValue < 0) {
+        if (achievementsValue < 0) {
             hasError = true
             this.setState({
-                achievementsInputFeedback: 'Please enter a value equal or greater than 0',
+                achievementsInputFeedback: 'Achievements number must be positive',
                 achievementsInputState: 'invalid'
             })
         } else {
@@ -106,8 +106,8 @@ export default class ProgressTrackerCreator extends Component {
         // Reset the errors & the form
         this.setState({
             gameSelectId: '',
-            completionTimeValue: 0,
-            achievementsValue: 0,
+            completionTimeValue: '',
+            achievementsValue: '',
             gameSelectState: null,
             completionTimeInputState: null,
             achievementsInputState: null,

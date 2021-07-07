@@ -5,7 +5,7 @@ import PropTypes from "prop-types"
 
 export default function ProgressTracker(props) {
 
-    const { highlightedRowId, onRowClick, gamesPlayed, onAddGamePlayed } = props
+    const { gamesPlayed, onAddGamePlayed } = props
     const calculateTotalTimePlayed = gamesPlayed => gamesPlayed.reduce((total, game) => total + game.completionTime, 0)
 
     return (
@@ -14,7 +14,8 @@ export default function ProgressTracker(props) {
 
             <ProgressTrackerCreator onAddGamePlayed={onAddGamePlayed} />
 
-            <table className="table table-striped">
+            <table className="table table-hover">
+                <caption>List of games tracked</caption>
                 <thead>
                 <tr>
                     <th>What</th>
@@ -38,8 +39,6 @@ export default function ProgressTracker(props) {
 }
 
 ProgressTracker.propTypes = {
-    highlightedRowId: PropTypes.any,
     gamesPlayed: PropTypes.array.isRequired,
-    onRowClick: PropTypes.func.isRequired,
     onAddGamePlayed: PropTypes.func.isRequired,
 }

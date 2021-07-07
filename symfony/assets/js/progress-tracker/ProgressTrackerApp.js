@@ -7,7 +7,6 @@ export default class ProgressTrackerApp extends Component {
         super(props)
 
         this.state = {
-            highlightedRowId: null,
             gamesPlayed: [
                 {id: uuid(), game: 'Conan', achievements: [36, 100], completionTime: 100},
                 {id: uuid(), game: 'Darkest Dungeon', achievements: [45, 45], completionTime: 99},
@@ -16,20 +15,16 @@ export default class ProgressTrackerApp extends Component {
         }
 
         //@see: https://symfonycasts.com/screencast/reactjs/callback-props
-        this.handleRowClick = this.handleRowClick.bind(this)
         this.handleAddGamePlayed = this.handleAddGamePlayed.bind(this)
-    }
-
-    handleRowClick(gamePlayedId) {
-        this.setState({highlightedRowId: gamePlayedId})
+        this.handleDeleteGamePlayed = this.handleDeleteGamePlayed.bind(this)
     }
 
     handleAddGamePlayed(game, time, achievements) {
         const newGamePlayed = {
             id: uuid(),
             game: game,
-            achievements: [parseInt(achievements), 100], //@todo get the total achievement of a game
-            completionTime: parseInt(time)
+            achievements: [achievements === '' ? 0 : parseInt(achievements), 100], //@todo get the total achievement of a game
+            completionTime: time === '' ? 0 : parseInt(time)
         }
 
         /**
@@ -41,12 +36,20 @@ export default class ProgressTrackerApp extends Component {
         })
     }
 
+    handleDeleteGamePlayed(id) {
+        this.setState((prevState) => {
+            return {
+                gamesPlayed: prevState.gamesPlayed.filter(gamePlayed => gamePlayed.id !== id)
+            }
+        })
+    }
+
     render() {
         return <ProgressTracker
             {...this.props}
             {...this.state}
-            onRowClick={this.handleRowClick}
             onAddGamePlayed={this.handleAddGamePlayed}
+            onDeleteGamePlayed={this.handleDeleteGamePlayed}
         />
     }
 }
