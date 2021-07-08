@@ -19,11 +19,24 @@ function displayAchievements([current, max]) {
 
 export default function ProgressTrackerList(props) {
 
-    const { gamesPlayed, onDeleteGamePlayed } = props
+    const { gamesPlayed, isLoaded, onDeleteGamePlayed } = props
 
     const handleDeleteClick = (event, gamePlayedId) => {
         event.preventDefault()
         onDeleteGamePlayed(gamePlayedId)
+    }
+
+    if(!isLoaded) {
+        return(
+            <tbody>
+            <tr>
+                <td colSpan="5" className="text-center" >
+                    <span className="fas fa-circle-notch fa-spin" aria-hidden="true"></span>
+                    &nbsp;Loading...
+                </td>
+            </tr>
+            </tbody>
+        )
     }
 
     return(
@@ -33,7 +46,7 @@ export default function ProgressTrackerList(props) {
                 <td>{ gamePlayed.game }</td>
                 <td>{ displayAchievements(gamePlayed.achievements) }</td>
                 <td>{ gamePlayed.completionTime }</td>
-                <td>{ gamePlayed.avgTime }</td>
+                <td>{ gamePlayed.averageCompletionTime === null ? 'no data' : gamePlayed.averageCompletionTime }</td>
                 <td>
                     <div className={"d-flex justify-content-evenly"}>
                         <a href="" className={"btn btn-secondary btn-sm"} aria-label={"Complete"}>
@@ -59,5 +72,6 @@ export default function ProgressTrackerList(props) {
 
 ProgressTrackerList.propTypes = {
     gamesPlayed: PropTypes.array.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
     onDeleteGamePlayed: PropTypes.func.isRequired
 }

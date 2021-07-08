@@ -8,6 +8,8 @@ App\GamePlayed\Model\GamePlayedModel:
       groups: ['game_played_list', 'game_played_show']
     completionTime:
       groups: ['game_played_list', 'game_played_show']
+    averageCompletionTime:
+      groups: [ 'game_played_list', 'game_played_show' ]
     achievements:
       groups: ['game_played_list', 'game_played_show']
     links:

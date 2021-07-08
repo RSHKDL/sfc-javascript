@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Model\GamePlayedModel;
 use App\Entity\GamePlayed;
 use App\GamePlayed\Form\NewGamePlayedType;
+use App\GamePlayed\Model\GamePlayedModel;
 use App\GamePlayed\NewGamePlayedCommandHandler;
 use App\Repository\GamePlayedRepository;
 use App\Repository\GameRepository;
@@ -170,13 +170,7 @@ class ProgressTrackerApiController extends AbstractController
      */
     protected function createGamePlayedModelFromEntity(GamePlayed $gamePlayed): GamePlayedModel
     {
-        $model = new GamePlayedModel(
-            $gamePlayed->getId(),
-            $gamePlayed->getGame()->getName(),
-            $gamePlayed->getPlayer()->getUsername(),
-            $gamePlayed->getTimeSpent()
-        );
-
+        $model = GamePlayedModel::createFromEntity($gamePlayed);
         $url = $this->generateUrl('api_game_played_show', ['id' => $gamePlayed->getId()]);
         $model->addLink('_self', $url);
 

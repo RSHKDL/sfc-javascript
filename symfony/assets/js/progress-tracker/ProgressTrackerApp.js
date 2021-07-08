@@ -1,22 +1,27 @@
 import React, { Component } from "react"
 import ProgressTracker from "./ProgressTracker"
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from "uuid"
+import { getGamesPlayed } from "../api/progress_tracker_api"
 
 export default class ProgressTrackerApp extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            gamesPlayed: [
-                {id: uuid(), game: 'Conan', achievements: [36, 100], completionTime: 100, avgTime: 85},
-                {id: uuid(), game: 'Darkest Dungeon', achievements: [45, 45], completionTime: 99, avgTime: 60},
-                {id: uuid(), game: 'Battlefield 6', achievements: [12, 51], completionTime: 280, avgTime: 140}
-            ]
+            gamesPlayed: [],
+            isLoaded: false
         }
 
         //@see: https://symfonycasts.com/screencast/reactjs/callback-props
         this.handleAddGamePlayed = this.handleAddGamePlayed.bind(this)
         this.handleDeleteGamePlayed = this.handleDeleteGamePlayed.bind(this)
+    }
+
+    componentDidMount() {
+        getGamesPlayed().then((data) => this.setState({
+            gamesPlayed: data,
+            isLoaded: true
+        }))
     }
 
     handleAddGamePlayed(game, time, achievements) {

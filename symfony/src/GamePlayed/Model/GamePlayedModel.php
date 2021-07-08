@@ -10,6 +10,7 @@ final class GamePlayedModel
     public string $game;
     public string $player;
     public ?int $completionTime;
+    public ?int $averageCompletionTime;
     public ?array $achievements;
     public array $links;
 
@@ -34,6 +35,7 @@ final class GamePlayedModel
             $gamePlayed->getPlayer()->getUsername()
         );
         $model->completionTime = $gamePlayed->getCompletionTime();
+        $model->averageCompletionTime = null; //todo add avg completion time logic
         $model->achievements = [
             $gamePlayed->getAchievements(),
             $gamePlayed->getGame()->getAchievements()
