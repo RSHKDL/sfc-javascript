@@ -36,11 +36,13 @@ class QueryGameCommandHandler implements CommandHandlerInterface
                 'GET',
                 $this->buildUrl($game)
             );
+            $arrayResponse = $apiResponse->toArray();
         } catch (TransportExceptionInterface $exception) {
             dd($exception);
+        } catch (\Throwable $throwable) {
+            dd($throwable);
         }
 
-        $arrayResponse = $apiResponse->toArray();
         $response = [];
         foreach ($arrayResponse['results'] as $game) {
             $response[] = GameModel::createFromArray($game);

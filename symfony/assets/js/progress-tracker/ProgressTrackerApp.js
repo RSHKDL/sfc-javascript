@@ -8,9 +8,9 @@ export default class ProgressTrackerApp extends Component {
 
         this.state = {
             gamesPlayed: [
-                {id: uuid(), game: 'Conan', achievements: [36, 100], completionTime: 100},
-                {id: uuid(), game: 'Darkest Dungeon', achievements: [45, 45], completionTime: 99},
-                {id: uuid(), game: 'Battlefield 6', achievements: [12, 51], completionTime: 280}
+                {id: uuid(), game: 'Conan', achievements: [36, 100], completionTime: 100, avgTime: 85},
+                {id: uuid(), game: 'Darkest Dungeon', achievements: [45, 45], completionTime: 99, avgTime: 60},
+                {id: uuid(), game: 'Battlefield 6', achievements: [12, 51], completionTime: 280, avgTime: 140}
             ]
         }
 
@@ -24,7 +24,8 @@ export default class ProgressTrackerApp extends Component {
             id: uuid(),
             game: game,
             achievements: [achievements === '' ? 0 : parseInt(achievements), 100], //@todo get the total achievement of a game
-            completionTime: time === '' ? 0 : parseInt(time)
+            completionTime: time === '' ? 0 : parseInt(time),
+            avgTime: 85 //@todo get the average time to complete
         }
 
         /**

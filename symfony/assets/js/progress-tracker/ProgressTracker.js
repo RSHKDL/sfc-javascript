@@ -18,9 +18,10 @@ export default function ProgressTracker(props) {
                 <caption>List of games tracked</caption>
                 <thead>
                 <tr>
-                    <th>What</th>
+                    <th>Game</th>
                     <th>Achievements</th>
-                    <th>Time spent</th>
+                    <th>Completion Time</th>
+                    <th>Avg. Completion Time</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -28,8 +29,9 @@ export default function ProgressTracker(props) {
                 <tfoot>
                 <tr>
                     <td>&nbsp;</td>
-                    <th>Total time spent</th>
-                    <th>{ calculateTotalTimePlayed(gamesPlayed) } hrs</th>
+                    <th>Est. time to clean backlog</th>
+                    <th>{ calculateTotalTimePlayed(gamesPlayed) } hrs done</th>
+                    <th>todo hrs remaining</th>
                     <td>&nbsp;</td>
                 </tr>
                 </tfoot>

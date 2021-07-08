@@ -10,13 +10,17 @@ final class GameModel
     public ?int $rawgId;
     public ?string $slug;
     public ?string $name;
+    public ?int $achievements;
+    public ?int $averageCompletionTime;
 
     public static function createFromArray(array $data): self
     {
         $model = new self();
         $model->rawgId = $data['id'];
-        $model->slug = $data['slug'];
-        $model->name = $data['name'];
+        $model->slug = $data['slug'] ?? null;
+        $model->name = $data['name'] ?? null;
+        $model->achievements = $data['parent_achievements_count'] ?? null;
+        $model->averageCompletionTime = null;
 
         return $model;
     }
@@ -28,6 +32,8 @@ final class GameModel
         $model->rawgId = $game->getRawgId();
         $model->slug = $game->getSlug();
         $model->name = $game->getName();
+        $model->achievements = $game->getAchievements();
+        $model->averageCompletionTime = $game->getAverageCompletionTime();
 
         return $model;
     }

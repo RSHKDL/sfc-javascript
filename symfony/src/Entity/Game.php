@@ -32,7 +32,17 @@ class Game
     /**
      * @ORM\Column(type="integer", unique=true)
      */
-    private string $rawgId;
+    private int $rawgId;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $achievements;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $averageCompletionTime;
 
     /**
      * @ORM\OneToMany(targetEntity=GamePlayed::class, mappedBy="game")
@@ -70,6 +80,26 @@ class Game
     public function getRawgId(): ?int
     {
         return $this->rawgId;
+    }
+
+    public function getAchievements(): ?int
+    {
+        return $this->achievements;
+    }
+
+    public function setAchievements(int $achievements): void
+    {
+        $this->achievements = $achievements;
+    }
+
+    public function getAverageCompletionTime(): ?int
+    {
+        return $this->achievements;
+    }
+
+    public function setAverageCompletionTime(int $averageCompletionTime): void
+    {
+        $this->averageCompletionTime = $averageCompletionTime;
     }
 
     /**

@@ -6,16 +6,12 @@ use App\DDD\CommandInterface;
 
 class AddGameCommand implements CommandInterface
 {
-    public int $rawgId;
-    public string $slug;
-    public string $name;
+    public int $id;
 
     public static function createFromArray(array $data): self
     {
         $command = new self();
-        $command->rawgId = $data['rawgId'];
-        $command->slug = $data['slug'];
-        $command->name = $data['name'];
+        $command->id = $data['rawgId'];
 
         return $command;
     }

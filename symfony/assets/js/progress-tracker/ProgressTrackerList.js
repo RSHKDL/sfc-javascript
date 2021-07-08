@@ -33,6 +33,7 @@ export default function ProgressTrackerList(props) {
                 <td>{ gamePlayed.game }</td>
                 <td>{ displayAchievements(gamePlayed.achievements) }</td>
                 <td>{ gamePlayed.completionTime }</td>
+                <td>{ gamePlayed.avgTime }</td>
                 <td>
                     <div className={"d-flex justify-content-evenly"}>
                         <a href="" className={"btn btn-secondary btn-sm"} aria-label={"Complete"}>

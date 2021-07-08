@@ -33,3 +33,7 @@ services:
     App\Game\QueryGameCommandHandler:
         arguments:
             $apiKey: '%env(resolve:API_KEY_RAWG)%'
+
+    App\Game\AddGameCommandHandler:
+        arguments:
+            $apiKey: '%env(resolve:API_KEY_RAWG)%'
