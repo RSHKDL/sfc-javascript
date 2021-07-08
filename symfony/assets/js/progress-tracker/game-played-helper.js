@@ -28,7 +28,7 @@ class Helper {
     static _addHours(gamesPlayed) {
         let totalHours = 0
         for (let gamePlayed of Object.entries(gamesPlayed)) {
-            totalHours += gamePlayed[1].timeSpentToComplete
+            totalHours += gamePlayed[1].completionTime
         }
 
         return totalHours

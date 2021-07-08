@@ -20,10 +20,12 @@ class GamePlayedFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         for($i = 0; $i < 5; $i++) {
-            $gamePlayed = new GamePlayed();
-            $gamePlayed->setPlayer($this->getReference('player_1'));
-            $gamePlayed->setGame($this->getReference("game_{$i}"));
-            $gamePlayed->setTimeSpent(mt_rand(50, 200));
+            $gamePlayed = new GamePlayed(
+                $this->getReference("game_{$i}"),
+                $this->getReference('player_1')
+            );
+            $gamePlayed->setCompletionTime(mt_rand(50, 200));
+            $gamePlayed->setAchievements(mt_rand(0, 10));
             $manager->persist($gamePlayed);
         }
 

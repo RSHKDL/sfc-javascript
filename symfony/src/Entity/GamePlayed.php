@@ -31,7 +31,18 @@ class GamePlayed
     /**
      * @ORM\Column(type="integer")
      */
-    private int $timeSpent;
+    private ?int $completionTime;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $achievements;
+
+    public function __construct(Game $game, Player $player)
+    {
+        $this->game = $game;
+        $this->player = $player;
+    }
 
     public function getId(): ?int
     {
@@ -62,14 +73,26 @@ class GamePlayed
         return $this;
     }
 
-    public function getTimeSpent(): ?int
+    public function getCompletionTime(): ?int
     {
-        return $this->timeSpent;
+        return $this->completionTime;
     }
 
-    public function setTimeSpent(int $timeSpent): self
+    public function setCompletionTime(int $completionTime): self
     {
-        $this->timeSpent = $timeSpent;
+        $this->completionTime = $completionTime;
+
+        return $this;
+    }
+
+    public function getAchievements(): ?int
+    {
+        return $this->achievements;
+    }
+
+    public function setAchievements(?int $achievements): self
+    {
+        $this->achievements = $achievements;
 
         return $this;
     }

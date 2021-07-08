@@ -163,10 +163,10 @@ class GamePlayed {
 }
 
 const rowTemplate = (gamePlayed) => `
-<tr data-hours-played="${gamePlayed.timeSpentToComplete}">
+<tr data-hours-played="${gamePlayed.completionTime}">
         <td>${gamePlayed.game}</td>
-        <td>to do</td>
-        <td>${gamePlayed.timeSpentToComplete}</td>
+        <td>${gamePlayed.achievements}</td>
+        <td>${gamePlayed.completionTime}</td>
         <td>
             <a href="#"
                class="js-delete-game-played text-danger text-decoration-none"

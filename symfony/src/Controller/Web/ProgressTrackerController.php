@@ -2,7 +2,7 @@
 
 namespace App\Controller\Web;
 
-use App\Api\Model\GamePlayedModel;
+use App\GamePlayed\Model\GamePlayedModel;
 use App\GamePlayed\Form\NewGamePlayedType;
 use App\Repository\GamePlayedRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

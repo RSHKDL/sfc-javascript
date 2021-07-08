@@ -11,8 +11,12 @@ class NewGamePlayedCommand implements CommandInterface
     public Game $game;
 
     /**
-     * @Assert\NotBlank(message="You must submit a time!")
-     * @Assert\GreaterThan(value="0", message="You must submit a time greater than 0!")
+     * @Assert\GreaterThanOrEqual(value="0", message="Completion time must be a positive integer")
      */
-    public int $timeSpentToComplete;
+    public ?int $completionTime;
+
+    /**
+     * @Assert\GreaterThanOrEqual(value="0", message="Achievements must be a positive integer")
+     */
+    public ?int $achievements;
 }

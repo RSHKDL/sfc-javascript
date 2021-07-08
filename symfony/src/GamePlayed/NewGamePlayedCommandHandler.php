@@ -8,6 +8,7 @@ use App\Entity\GamePlayed;
 use App\Repository\GamePlayedRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use InvalidArgumentException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class NewGamePlayedCommandHandler implements CommandHandlerInterface
@@ -29,13 +30,25 @@ class NewGamePlayedCommandHandler implements CommandHandlerInterface
      */
     public function handle(CommandInterface $command): GamePlayed
     {
-        $gamePlayed = new GamePlayed();
-        $gamePlayed->setGame($command->game);
-        $gamePlayed->setPlayer($this->tokenStorage->getToken()->getUser());
-        $gamePlayed->setTimeSpent($command->timeSpentToComplete);
+        $this->supports($command);
+
+        $gamePlayed = new GamePlayed(
+            $command->game,
+            $this->tokenStorage->getToken()->getUser()
+        );
+
+        $gamePlayed->setCompletionTime($command->completionTime);
+        $gamePlayed->setAchievements($command->achievements);
 
         $this->gamePlayedRepository->save($gamePlayed);
 
         return $gamePlayed;
+    }
+
+    public function supports(CommandInterface $command): void
+    {
+        if(!$command instanceof NewGamePlayedCommand) {
+            throw new InvalidArgumentException();
+        }
     }
 }

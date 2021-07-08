@@ -14,9 +14,9 @@ class GameFixtures extends Fixture
             $game = new Game(
                 "fake game n°{$i}",
                 "fake-game-slug-{$i}",
-                111+$i
+                1110+$i
             );
-            $game->setAchievements(mt_rand(0, 100));
+            $game->setAchievements(mt_rand(10, 100));
             $manager->persist($game);
             $this->addReference("game_{$i}", $game);
         }

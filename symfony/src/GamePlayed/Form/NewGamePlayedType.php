@@ -17,7 +17,7 @@ class NewGamePlayedType extends AbstractType
             ->add('game', EntityType::class, [
                 'class' => Game::class
             ])
-            ->add('timeSpentToComplete')
+            ->add('completionTime')
         ;
     }
 
