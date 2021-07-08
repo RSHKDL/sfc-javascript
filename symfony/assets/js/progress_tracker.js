@@ -1,5 +1,7 @@
+'use strict'
+
 import React from "react"
-import { render } from 'react-dom'
+import { render } from "react-dom"
 import ProgressTrackerApp from "./progress-tracker/ProgressTrackerApp"
 import { Tooltip } from "bootstrap"
 
