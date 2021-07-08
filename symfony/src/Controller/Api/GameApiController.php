@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Game;
 use App\Game\AddGameCommand;
 use App\Game\AddGameCommandHandler;
+use App\Game\DisplayGamesQueryHandler;
 use App\Game\Form\QueryGameType;
 use App\Game\Model\GameModel;
 use App\Game\QueryGameCommandHandler;
@@ -91,8 +92,10 @@ class GameApiController extends AbstractApiController
      *     methods={"GET"},
      *     options={"expose"=true})
      */
-    public function getGames(): Response
+    public function getGames(DisplayGamesQueryHandler $queryHandler): Response
     {
-        return new Response('to do');
+        $games = $queryHandler->handle();
+
+        return new JsonResponse($games);
     }
 }

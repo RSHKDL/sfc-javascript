@@ -6,14 +6,6 @@
     <section class="js-games-wrapper">
         {% include('game/_form.html.twig') %}
         <div class="js-found-games"></div>
-        <h2>List of games</h2>
-        <ul>
-            {% for game in games %}
-                <li>{{ game.name }}</li>
-            {% else %}
-                <li>No games.</li>
-            {% endfor %}
-        </ul>
     </section>
 
     <div id="game-app"></div>

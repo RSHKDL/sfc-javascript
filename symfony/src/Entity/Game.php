@@ -94,7 +94,7 @@ class Game
 
     public function getAverageCompletionTime(): ?int
     {
-        return $this->achievements;
+        return $this->averageCompletionTime;
     }
 
     public function setAverageCompletionTime(int $averageCompletionTime): void
