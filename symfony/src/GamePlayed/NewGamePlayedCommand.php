@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NewGamePlayedCommand implements CommandInterface
 {
-    public Game $game;
+    public int $game;
 
     /**
      * @Assert\GreaterThanOrEqual(value="0", message="Completion time must be a positive integer")

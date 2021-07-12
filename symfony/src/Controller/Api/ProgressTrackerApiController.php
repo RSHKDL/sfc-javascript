@@ -8,8 +8,6 @@ use App\GamePlayed\Model\GamePlayedModel;
 use App\GamePlayed\NewGamePlayedCommandHandler;
 use App\Repository\GamePlayedRepository;
 use App\Repository\GameRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +15,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class ProgressTrackerApiController extends AbstractController
+class ProgressTrackerApiController extends AbstractApiController
 {
     private GamePlayedRepository $gamePlayedRepository;
     private GameRepository $gameRepository;
-    private SerializerInterface $serializer;
     private NewGamePlayedCommandHandler $newGamePlayedCommandHandler;
 
     public function __construct(
@@ -30,9 +27,9 @@ class ProgressTrackerApiController extends AbstractController
         SerializerInterface $serializer,
         NewGamePlayedCommandHandler $newGamePlayedCommandHandler
     ) {
+        parent::__construct($serializer);
         $this->gamePlayedRepository = $gamePlayedRepository;
         $this->gameRepository = $gameRepository;
-        $this->serializer = $serializer;
         $this->newGamePlayedCommandHandler = $newGamePlayedCommandHandler;
     }
 
@@ -71,7 +68,7 @@ class ProgressTrackerApiController extends AbstractController
      *     methods={"POST"},
      *     options={"expose"=true})
      */
-    public function createGamePlayed(Request $request): Response
+    public function createGamePlayed(Request $request, NewGamePlayedCommandHandler $commandHandler): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $data = json_decode($request->getContent(), true);
@@ -92,11 +89,19 @@ class ProgressTrackerApiController extends AbstractController
             );
         }
 
-        $command = $form->getData();
-        $gamePlayed = $this->newGamePlayedCommandHandler->handle($command);
+        try {
+            $command = $form->getData();
+            $gamePlayed = $commandHandler->handle($command);
+        } catch (\Throwable $throwable) {
+            return $this->createApiResponse(
+                ['errors' => $throwable->getMessage()],
+                [],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
-        // Return an empty response and use Promises
-        $response = new Response(null, Response::HTTP_NO_CONTENT);
+        $gamePlayedModel = $this->createGamePlayedModelFromEntity($gamePlayed);
+        $response = $this->createApiResponse($gamePlayedModel, ['game_played_show'], Response::HTTP_CREATED);
         $response->headers->set(
             'Location',
             $this->generateUrl('api_game_played_show', ['id' => $gamePlayed->getId()])
@@ -119,47 +124,6 @@ class ProgressTrackerApiController extends AbstractController
         $em->flush();
 
         return new Response(null, Response::HTTP_NO_CONTENT);
-    }
-
-    protected function createApiResponse($data, array $groups = [], int $statusCode = 200): JsonResponse
-    {
-        $json = $this->serializer->serialize($data, 'json', ['groups' => $groups]);
-
-        return new JsonResponse($json, $statusCode, [], true);
-    }
-
-    /**
-     * Returns an associative array of validation errors
-     *
-     * {
-     *     'firstName': 'This value is required',
-     *     'subForm': {
-     *         'someField': 'Invalid value'
-     *     }
-     * }
-     *
-     * @param FormInterface $form
-     * @return array|string
-     */
-    protected function getErrorsFromForm(FormInterface $form)
-    {
-        foreach ($form->getErrors() as $error) {
-            // only supporting 1 error per field
-            // and not supporting a "field" with errors, that has more
-            // fields with errors below it
-            return $error->getMessage();
-        }
-
-        $errors = array();
-        foreach ($form->all() as $childForm) {
-            if ($childForm instanceof FormInterface) {
-                if ($childError = $this->getErrorsFromForm($childForm)) {
-                    $errors[$childForm->getName()] = $childError;
-                }
-            }
-        }
-
-        return $errors;
     }
 
     /**

@@ -6,6 +6,7 @@ use App\DDD\CommandHandlerInterface;
 use App\DDD\CommandInterface;
 use App\Entity\GamePlayed;
 use App\Repository\GamePlayedRepository;
+use App\Repository\GameRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use InvalidArgumentException;
@@ -15,13 +16,16 @@ class NewGamePlayedCommandHandler implements CommandHandlerInterface
 {
     private TokenStorageInterface $tokenStorage;
     private GamePlayedRepository $gamePlayedRepository;
+    private GameRepository $gameRepository;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        GamePlayedRepository $gamePlayedRepository
+        GamePlayedRepository $gamePlayedRepository,
+        GameRepository $gameRepository
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->gamePlayedRepository = $gamePlayedRepository;
+        $this->gameRepository = $gameRepository;
     }
 
     /**
@@ -32,8 +36,10 @@ class NewGamePlayedCommandHandler implements CommandHandlerInterface
     {
         $this->supports($command);
 
+        $game = $this->gameRepository->find($command->game);
+
         $gamePlayed = new GamePlayed(
-            $command->game,
+            $game,
             $this->tokenStorage->getToken()->getUser()
         );
 

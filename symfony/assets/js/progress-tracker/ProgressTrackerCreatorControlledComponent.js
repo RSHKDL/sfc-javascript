@@ -18,10 +18,10 @@ export default class ProgressTrackerCreator extends Component {
         }
 
         this.selectOptions = [
-            { id: 'desperado_3', text: 'Desperado III' },
-            { id: 'conan_exiles', text: 'Conan Exiles' },
-            { id: 'darkest_dungeon', text: 'Darkest Dungeon' },
-            { id: 'battlefield_6', text: 'Battlefield 6' },
+            { id: 16, text: 'Fake game 0' },
+            { id: 17, text: 'Fake game 1' },
+            { id: 18, text: 'Fake game 2' },
+            { id: 19, text: 'Fake game 3' },
         ]
 
         this.handleFormSubmit = this.handleFormSubmit.bind(this)
@@ -95,10 +95,8 @@ export default class ProgressTrackerCreator extends Component {
             return
         }
 
-        const gameSelectLabel = this.selectOptions.find((option) => option.id === gameSelectId).text
-
         onAddGamePlayed(
-            gameSelectLabel,
+            gameSelectId,
             completionTimeValue,
             achievementsValue
         )

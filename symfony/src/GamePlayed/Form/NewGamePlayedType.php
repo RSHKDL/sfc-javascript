@@ -14,10 +14,9 @@ class NewGamePlayedType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('game', EntityType::class, [
-                'class' => Game::class
-            ])
+            ->add('game')
             ->add('completionTime')
+            ->add('achievements')
         ;
     }
 

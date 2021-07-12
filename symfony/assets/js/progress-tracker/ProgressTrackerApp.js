@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import ProgressTracker from "./ProgressTracker"
 import { v4 as uuid } from "uuid"
-import { getGamesPlayed } from "../api/progress_tracker_api"
+import { getGamesPlayed, deleteGamePlayed, createGamePlayed } from "../api/progress_tracker_api"
 
 export default class ProgressTrackerApp extends Component {
     constructor(props) {
@@ -24,25 +24,27 @@ export default class ProgressTrackerApp extends Component {
         }))
     }
 
-    handleAddGamePlayed(game, time, achievements) {
+    handleAddGamePlayed(id, time, achievements) {
         const newGamePlayed = {
-            id: uuid(),
-            game: game,
-            achievements: [achievements === '' ? 0 : parseInt(achievements), 100], //@todo get the total achievement of a game
+            //id: uuid(), //@todo we'll use uuid later
+            game: parseInt(id),
+            achievements: achievements === '' ? 0 : parseInt(achievements),
             completionTime: time === '' ? 0 : parseInt(time),
-            avgTime: 85 //@todo get the average time to complete
         }
 
         /**
          * @see https://symfonycasts.com/screencast/reactjs/immutable-state
          */
-        this.setState(prevState => {
-            const newGamesPlayed = [...prevState.gamesPlayed, newGamePlayed]
-            return {gamesPlayed: newGamesPlayed}
+        createGamePlayed(newGamePlayed).then(newGamePlayed => {
+            this.setState(prevState => {
+                const newGamesPlayed = [...prevState.gamesPlayed, newGamePlayed]
+                return {gamesPlayed: newGamesPlayed}
+            })
         })
     }
 
     handleDeleteGamePlayed(id) {
+        deleteGamePlayed(id) //@todo Promise return is ignored :(
         this.setState((prevState) => {
             return {
                 gamesPlayed: prevState.gamesPlayed.filter(gamePlayed => gamePlayed.id !== id)
