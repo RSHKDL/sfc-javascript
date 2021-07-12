@@ -9,8 +9,12 @@ export default class ProgressTrackerApp extends Component {
 
         this.state = {
             gamesPlayed: [],
-            isLoaded: false
+            isLoaded: false,
+            isSavingNewGamePlayed: false,
+            successMessage: ''
         }
+
+        this.successMessageTimeoutHandle = 0
 
         //@see: https://symfonycasts.com/screencast/reactjs/callback-props
         this.handleAddGamePlayed = this.handleAddGamePlayed.bind(this)
@@ -24,6 +28,23 @@ export default class ProgressTrackerApp extends Component {
         }))
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.successMessageTimeoutHandle)
+    }
+
+    /**
+     * https://symfonycasts.com/screencast/reactjs/success-messages
+     * @param message
+     */
+    setSuccessMessage(message) {
+        this.setState({successMessage: message})
+        clearTimeout(this.successMessageTimeoutHandle)
+        this.successMessageTimeoutHandle = setTimeout(() => {
+            this.setState({successMessage: ''})
+            this.successMessageTimeoutHandle = 0
+        }, 1500)
+    }
+
     handleAddGamePlayed(id, time, achievements) {
         const newGamePlayed = {
             //id: uuid(), //@todo we'll use uuid later
@@ -32,14 +53,21 @@ export default class ProgressTrackerApp extends Component {
             completionTime: time === '' ? 0 : parseInt(time),
         }
 
+        this.setState({isSavingNewGamePlayed: true})
+
         /**
          * @see https://symfonycasts.com/screencast/reactjs/immutable-state
          */
         createGamePlayed(newGamePlayed).then(newGamePlayed => {
             this.setState(prevState => {
                 const newGamesPlayed = [...prevState.gamesPlayed, newGamePlayed]
-                return {gamesPlayed: newGamesPlayed}
+                return {
+                    gamesPlayed: newGamesPlayed,
+                    isSavingNewGamePlayed: false
+                }
             })
+
+            this.setSuccessMessage('New progress saved!')
         })
     }
 

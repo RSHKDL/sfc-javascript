@@ -5,11 +5,17 @@ import PropTypes from "prop-types"
 
 export default function ProgressTracker(props) {
 
-    const { gamesPlayed, onAddGamePlayed } = props
+    const { gamesPlayed, onAddGamePlayed, successMessage } = props
     const calculateTotalTimePlayed = gamesPlayed => gamesPlayed.reduce((total, game) => total + game.completionTime, 0)
 
     return (
         <section>
+            {successMessage && (
+                <div className="alert alert-success" role="alert">
+                    <span className="far fa-smile" aria-hidden="true"></span>
+                    &nbsp;{successMessage}
+                </div>
+            )}
             <h1>Track your progress! <span>🤩️</span></h1>
 
             <ProgressTrackerCreator onAddGamePlayed={onAddGamePlayed} />
@@ -43,4 +49,5 @@ export default function ProgressTracker(props) {
 ProgressTracker.propTypes = {
     gamesPlayed: PropTypes.array.isRequired,
     onAddGamePlayed: PropTypes.func.isRequired,
+    successMessage: PropTypes.string.isRequired
 }

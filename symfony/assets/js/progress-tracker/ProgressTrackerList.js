@@ -19,7 +19,7 @@ function displayAchievements([current, max]) {
 
 export default function ProgressTrackerList(props) {
 
-    const { gamesPlayed, isLoaded, onDeleteGamePlayed } = props
+    const { gamesPlayed, isLoaded, onDeleteGamePlayed, isSavingNewGamePlayed } = props
 
     const handleDeleteClick = (event, gamePlayedId) => {
         event.preventDefault()
@@ -66,6 +66,14 @@ export default function ProgressTrackerList(props) {
                 </td>
             </tr>
         ))}
+        {isSavingNewGamePlayed && (
+            <tr>
+                <td colSpan="5" className="text-center" >
+                    <span className="fas fa-circle-notch fa-spin" aria-hidden="true"></span>
+                    &nbsp;Saving progress to the database...
+                </td>
+            </tr>
+        )}
         </tbody>
     )
 }
@@ -73,5 +81,6 @@ export default function ProgressTrackerList(props) {
 ProgressTrackerList.propTypes = {
     gamesPlayed: PropTypes.array.isRequired,
     isLoaded: PropTypes.bool.isRequired,
+    isSavingNewGamePlayed: PropTypes.bool.isRequired,
     onDeleteGamePlayed: PropTypes.func.isRequired
 }

@@ -107,6 +107,7 @@ class ProgressTrackerApiController extends AbstractApiController
             $this->generateUrl('api_game_played_show', ['id' => $gamePlayed->getId()])
         );
 
+        sleep(1);
         return $response;
     }
 
