@@ -42,7 +42,11 @@ export default function ProgressTrackerList(props) {
     return(
         <tbody>
         {gamesPlayed.map((gamePlayed) => (
-            <tr key={gamePlayed.id}>
+            <tr key={gamePlayed.id}
+                style={{
+                    opacity: gamePlayed.isDeleting ? .3 : 1
+                }}
+            >
                 <td>{ gamePlayed.game }</td>
                 <td>{ displayAchievements(gamePlayed.achievements) }</td>
                 <td>{ gamePlayed.completionTime }</td>

@@ -67,17 +67,39 @@ export default class ProgressTrackerApp extends Component {
                 }
             })
 
-            this.setSuccessMessage('New progress saved!')
+            this.setSuccessMessage('Progress tracked!')
         })
     }
 
+    /**
+     * First modify an object inside the state without mutating it
+     * Then remove the item without mutating the state:
+     * filter return a new array
+     *
+     * @see https://symfonycasts.com/screencast/reactjs/deep-state-update
+     */
     handleDeleteGamePlayed(id) {
-        deleteGamePlayed(id) //@todo Promise return is ignored :(
         this.setState((prevState) => {
             return {
-                gamesPlayed: prevState.gamesPlayed.filter(gamePlayed => gamePlayed.id !== id)
+                gamesPlayed: prevState.gamesPlayed.map(gamePlayed => {
+                    if (gamePlayed.id !== id) {
+                        return gamePlayed
+                    }
+
+                    return Object.assign({}, gamePlayed, {isDeleting: true})
+                })
             }
         })
+
+        deleteGamePlayed(id).then(() => {
+            this.setState((prevState) => {
+                return {
+                    gamesPlayed: prevState.gamesPlayed.filter(gamePlayed => gamePlayed.id !== id)
+                }
+            })
+            this.setSuccessMessage('Progress un-tracked!')
+        })
+
     }
 
     render() {

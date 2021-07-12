@@ -1,7 +1,10 @@
 function fetchJson(url, options) {
     return fetch(url, Object.assign({
         credentials: 'same-origin',
-    }, options)).then(response => response.json())
+    }, options))
+        // Decode JSON but avoid issue with empty responses
+        .then(response => response.text())
+        .then(text => text ? JSON.parse(text) : '')
 }
 
 export function getGamesPlayed() {
