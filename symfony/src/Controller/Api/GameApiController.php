@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Api\ApiRoute;
 use App\Entity\Game;
 use App\Game\AddGameCommand;
 use App\Game\AddGameCommandHandler;
@@ -16,6 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class GameApiController
+ * @ApiRoute()
+ */
 class GameApiController extends AbstractApiController
 {
     /**

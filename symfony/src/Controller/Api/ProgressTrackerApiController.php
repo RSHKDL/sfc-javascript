@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Api\ApiRoute;
 use App\Entity\GamePlayed;
 use App\GamePlayed\Form\NewGamePlayedType;
 use App\GamePlayed\Model\GamePlayedModel;
@@ -15,6 +16,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Class ProgressTrackerApiController
+ * @ApiRoute()
+ */
 class ProgressTrackerApiController extends AbstractApiController
 {
     private GamePlayedRepository $gamePlayedRepository;
