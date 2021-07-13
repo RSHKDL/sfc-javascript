@@ -11,7 +11,8 @@ export default class ProgressTrackerApp extends Component {
             gamesPlayed: [],
             isLoaded: false,
             isSavingNewGamePlayed: false,
-            successMessage: ''
+            successMessage: '',
+            validationErrorMessage: ''
         }
 
         this.successMessageTimeoutHandle = 0
@@ -55,20 +56,35 @@ export default class ProgressTrackerApp extends Component {
 
         this.setState({isSavingNewGamePlayed: true})
 
+        const newState = {
+            isSavingNewGamePlayed: false
+        }
+
         /**
          * @see https://symfonycasts.com/screencast/reactjs/immutable-state
          */
-        createGamePlayed(newGamePlayed).then(newGamePlayed => {
-            this.setState(prevState => {
-                const newGamesPlayed = [...prevState.gamesPlayed, newGamePlayed]
-                return {
-                    gamesPlayed: newGamesPlayed,
-                    isSavingNewGamePlayed: false
-                }
-            })
+        createGamePlayed(newGamePlayed)
+            .then(newGamePlayed => {
+                this.setState(prevState => {
+                    const newGamesPlayed = [...prevState.gamesPlayed, newGamePlayed]
+                    return {
+                        ...newState,
+                        gamesPlayed: newGamesPlayed,
+                        validationErrorMessage: ''
+                    }
+                })
 
-            this.setSuccessMessage('Progress tracked!')
-        })
+                this.setSuccessMessage('Progress tracked!')
+            })
+            .catch(error => {
+                error.response.json().then(errorData => {
+                    const errorMessage = errorData.errors
+                    this.setState({
+                        ...newState,
+                        validationErrorMessage: errorMessage
+                    })
+                })
+            })
     }
 
     /**

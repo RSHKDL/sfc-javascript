@@ -18,7 +18,10 @@ export default function ProgressTracker(props) {
             )}
             <h1>Track your progress! <span>🤩️</span></h1>
 
-            <ProgressTrackerCreator onAddGamePlayed={onAddGamePlayed} />
+            <ProgressTrackerCreator
+                onAddGamePlayed={onAddGamePlayed}
+                {...props}
+            />
 
             <table className="table table-hover">
                 <caption>List of games tracked</caption>

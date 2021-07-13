@@ -140,8 +140,16 @@ export default class ProgressTrackerCreator extends Component {
             achievementsInputFeedback,
         } = this.state
 
+        const { validationErrorMessage } = this.props
+
         return (
             <form className={`row g-3 align-items-center needs-validation`} onSubmit={this.handleFormSubmit}>
+                { validationErrorMessage && (
+                    <div className="alert alert-danger">
+                        <span className="far fa-frown" aria-hidden="true"></span>
+                        &nbsp;{ validationErrorMessage }
+                    </div>
+                )}
                 <div className="col">
                     <label className="visually-hidden" htmlFor="game_played_item">Choose a game</label>
                     <select id="game_played_item"
@@ -188,5 +196,6 @@ export default class ProgressTrackerCreator extends Component {
 }
 
 ProgressTrackerCreator.propTypes = {
-    onAddGamePlayed: PropTypes.func.isRequired
+    onAddGamePlayed: PropTypes.func.isRequired,
+    validationErrorMessage: PropTypes.string.isRequired
 }

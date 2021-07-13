@@ -9,6 +9,7 @@ use App\Repository\GamePlayedRepository;
 use App\Repository\GameRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use GameAlreadyTrackedException;
 use InvalidArgumentException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -31,21 +32,30 @@ class NewGamePlayedCommandHandler implements CommandHandlerInterface
     /**
      * @throws ORMException
      * @throws OptimisticLockException
+     * @throws GameAlreadyTrackedException
      */
     public function handle(CommandInterface $command): GamePlayed
     {
         $this->supports($command);
 
+        $user = $this->tokenStorage->getToken()->getUser();
+        $gamesPlayed = $this->gamePlayedRepository->findBy(['player' => $user]);
         $game = $this->gameRepository->find($command->game);
+
+        foreach ($gamesPlayed as $gamePlayed) {
+            $game2 = $gamePlayed->getGame();
+            if ($game === $game2) {
+                throw new GameAlreadyTrackedException();
+            }
+        }
 
         $gamePlayed = new GamePlayed(
             $game,
-            $this->tokenStorage->getToken()->getUser()
+            $user
         );
 
         $gamePlayed->setCompletionTime($command->completionTime);
         $gamePlayed->setAchievements($command->achievements);
-
         $this->gamePlayedRepository->save($gamePlayed);
 
         return $gamePlayed;

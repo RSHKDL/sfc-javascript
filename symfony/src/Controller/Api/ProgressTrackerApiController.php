@@ -92,6 +92,12 @@ class ProgressTrackerApiController extends AbstractApiController
         try {
             $command = $form->getData();
             $gamePlayed = $commandHandler->handle($command);
+        } catch (\GameAlreadyTrackedException $throwable) {
+            return $this->createApiResponse(
+                ['errors' => $throwable->getMessage()],
+                [],
+                Response::HTTP_CONFLICT
+            );
         } catch (\Throwable $throwable) {
             return $this->createApiResponse(
                 ['errors' => $throwable->getMessage()],

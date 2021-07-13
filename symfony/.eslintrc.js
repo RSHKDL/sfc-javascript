@@ -1,7 +1,7 @@
 module.exports = {
     extends: ['eslint:recommended', 'plugin:react/recommended'],
     parserOptions: {
-        ecmaVersion: 6,
+        ecmaVersion: 2021, //@see https://eslint.org/docs/user-guide/configuring/language-options#specifying-parser-options
         sourceType: 'module',
         ecmaFeatures: {
             jsx: true
