@@ -5,7 +5,7 @@ import { render } from "react-dom"
 import ProgressTrackerApp from "./progress-tracker/ProgressTrackerApp"
 import { Tooltip } from "bootstrap"
 
-render(<ProgressTrackerApp/>, document.getElementById('progress-tracker-app'))
+render(<ProgressTrackerApp {...window.PROGRESS_TRACKER_APP_PROPS} />, document.getElementById('progress-tracker-app'))
 
 /**
  * Initialize all bootstrap Tooltips on document ready

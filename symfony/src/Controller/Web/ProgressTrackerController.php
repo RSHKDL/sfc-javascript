@@ -5,6 +5,7 @@ namespace App\Controller\Web;
 use App\GamePlayed\Model\GamePlayedModel;
 use App\GamePlayed\Form\NewGamePlayedType;
 use App\Repository\GamePlayedRepository;
+use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,13 +15,16 @@ class ProgressTrackerController extends AbstractController
 {
     private GamePlayedRepository $gamePlayedRepository;
     private SerializerInterface $serializer;
+    private GameRepository $gameRepository;
 
     public function __construct(
         GamePlayedRepository $gamePlayedRepository,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        GameRepository $gameRepository
     ) {
         $this->gamePlayedRepository = $gamePlayedRepository;
         $this->serializer = $serializer;
+        $this->gameRepository = $gameRepository;
     }
 
     /**
@@ -43,9 +47,23 @@ class ProgressTrackerController extends AbstractController
         }
         $gamesPlayedJson = $this->serializer->serialize($items, 'json', ['groups' => ['game_played_list']]);
 
+        $games = $this->gameRepository->findAll();
+        $progressTrackerAppProps = [
+            'trackableGames' => []
+        ];
+
+        foreach ($games as $game) {
+            $progressTrackerAppProps['trackableGames'][] = [
+                'id' => $game->getId(),
+                'text' => $game->getName(),
+                'achievements' => $game->getAchievements()
+            ];
+        }
+
         return $this->render('progress_tracker/index.html.twig', [
             'form' => $form->createView(),
-            'gamesPlayedJson' => $gamesPlayedJson
+            'gamesPlayedJson' => $gamesPlayedJson,
+            'progressTrackerAppProps' => $progressTrackerAppProps
         ]);
     }
 }

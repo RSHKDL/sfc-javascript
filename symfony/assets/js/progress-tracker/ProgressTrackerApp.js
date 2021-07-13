@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PropTypes from "prop-types"
 import ProgressTracker from "./ProgressTracker"
 import { v4 as uuid } from "uuid"
 import { getGamesPlayed, deleteGamePlayed, createGamePlayed } from "../api/progress_tracker_api"
@@ -126,4 +127,12 @@ export default class ProgressTrackerApp extends Component {
             onDeleteGamePlayed={this.handleDeleteGamePlayed}
         />
     }
+}
+
+ProgressTrackerApp.propTypes = {
+    trackableGames: PropTypes.array
+}
+
+ProgressTrackerApp.defaultProps = {
+    trackableGames: []
 }

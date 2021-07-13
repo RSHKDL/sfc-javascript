@@ -14,6 +14,11 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        // Must be declared before the entrypoint
+        window.PROGRESS_TRACKER_APP_PROPS = {{ progressTrackerAppProps|json_encode|raw }}
+            console.log('in twig', window.PROGRESS_TRACKER_APP_PROPS )
+    </script>
     {{ encore_entry_script_tags('progress-tracker') }}
     {{ encore_entry_script_tags('progress_tracker') }}
 {% endblock %}

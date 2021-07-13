@@ -17,13 +17,6 @@ export default class ProgressTrackerCreator extends Component {
             achievementsInputFeedback: null,
         }
 
-        this.selectOptions = [
-            { id: 16, text: 'Fake game 0' },
-            { id: 17, text: 'Fake game 1' },
-            { id: 18, text: 'Fake game 2' },
-            { id: 19, text: 'Fake game 3' },
-        ]
-
         this.handleFormSubmit = this.handleFormSubmit.bind(this)
         this.handleGameSelectIdChange = this.handleGameSelectIdChange.bind(this)
         this.handleCompletionTimeValueChange = this.handleCompletionTimeValueChange.bind(this)
@@ -140,7 +133,7 @@ export default class ProgressTrackerCreator extends Component {
             achievementsInputFeedback,
         } = this.state
 
-        const { validationErrorMessage } = this.props
+        const { validationErrorMessage, trackableGames } = this.props
 
         return (
             <form className={`row g-3 align-items-center needs-validation`} onSubmit={this.handleFormSubmit}>
@@ -157,7 +150,7 @@ export default class ProgressTrackerCreator extends Component {
                             onChange={this.handleGameSelectIdChange}
                             className={`form-select is-${gameSelectState}`}>
                         <option value="">Choose a game</option>
-                        {this.selectOptions.map(option => <option value={option.id} key={option.id}>{option.text}</option>)}
+                        {trackableGames.map(option => <option value={option.id} key={option.id}>{option.text}</option>)}
                     </select>
                     {gameSelectFeedback && <div className={`${gameSelectState}-feedback`}>{gameSelectFeedback}</div>}
                 </div>
@@ -197,5 +190,6 @@ export default class ProgressTrackerCreator extends Component {
 
 ProgressTrackerCreator.propTypes = {
     onAddGamePlayed: PropTypes.func.isRequired,
-    validationErrorMessage: PropTypes.string.isRequired
+    validationErrorMessage: PropTypes.string.isRequired,
+    trackableGames: PropTypes.array.isRequired
 }
