@@ -16,7 +16,7 @@ export default function ProgressTracker(props) {
                     &nbsp;{successMessage}
                 </div>
             )}
-            <h1>Track your progress! <span>🤩️</span></h1>
+            <h1>Track your progress!</h1>
 
             <ProgressTrackerCreator
                 onAddGamePlayed={onAddGamePlayed}
