@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import Button from "../components/Button"
 
 export default class ProgressTrackerCreator extends Component {
     constructor(props) {
@@ -178,10 +179,10 @@ export default class ProgressTrackerCreator extends Component {
                 </div>
                 {' '}
                 <div className="col">
-                    <button type="submit" className="btn btn-primary">
+                    <Button type="submit" className="btn-primary">
                         <span className="fas fa-crosshairs" aria-hidden="true"></span>
                         &nbsp;Track it!
-                    </button>
+                    </Button>
                 </div>
             </form>
         )
