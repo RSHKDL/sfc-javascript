@@ -8,17 +8,22 @@ use Doctrine\Persistence\ObjectManager;
 
 class GameFixtures extends Fixture
 {
+    use FixturesTrait;
+
     public function load(ObjectManager $manager)
     {
-        for($i = 0; $i < 5; $i++) {
+        $gamesData = $this->loadData("games");
+        foreach ($gamesData as $gameData) {
             $game = new Game(
-                "fake game n°{$i}",
-                "fake-game-slug-{$i}",
-                1110+$i
+                $gameData["name"],
+                $gameData["slug"],
+                $gameData["rawg_id"]
             );
-            $game->setAchievements(mt_rand(10, 100));
+            if ($gameData["achievements"] !== null) {
+                $game->setAchievements($gameData["achievements"]);
+            }
             $manager->persist($game);
-            $this->addReference("game_{$i}", $game);
+            $this->addReference($gameData["name"], $game);
         }
 
         $manager->flush();

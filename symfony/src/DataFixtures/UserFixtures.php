@@ -9,6 +9,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends Fixture
 {
+    use FixturesTrait;
+
     private UserPasswordEncoderInterface $encoder;
 
     public function __construct(UserPasswordEncoderInterface $encoder)
@@ -18,14 +20,17 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        for($i = 0; $i < 2; $i++) {
+        $usersData = $this->loadData('users');
+        foreach ($usersData as $userData) {
             $player = new Player();
-            $player->setEmail("player{$i}@test.com");
-            $player->setPassword($this->encoder->encodePassword($player, 'engage'));
+            $player->setEmail($userData['email']);
+            $player->setPassword($this->encoder->encodePassword($player, $userData['password']));
             $manager->persist($player);
-            $this->addReference("player_{$i}", $player);
+            $this->addReference($userData["username"], $player);
         }
 
         $manager->flush();
     }
+
+
 }

@@ -27,3 +27,8 @@ yarn-error.log
 /assets/json/*
 !/assets/json/.gitkeep
 ###< FosJsRoutingBundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

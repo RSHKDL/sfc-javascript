@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Elder Scroll XII",
+    "slug": "elder-scroll-12",
+    "rawg_id": 1100,
+    "achievements": 60
+  },
+  {
+    "name": "Sim City 2022",
+    "slug": "sim-city-2022",
+    "rawg_id": 1200,
+    "achievements": 42
+  },
+  {
+    "name": "Age of Empire: Retribution",
+    "slug": "age-of-empire-retribution",
+    "rawg_id": 1300,
+    "achievements": 100
+  },
+  {
+    "name": "Castagne! Pied bouche et chataîgnes",
+    "slug": "castagne-pied-bouche-chataignes",
+    "rawg_id": 1400,
+    "achievements": null
+  }
+]
